@@ -1,6 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Products from '../views/Products.vue'; 
 import ProductDetail from '../views/ProductDetail.vue'; 
+import Register from '../views/Register.vue';
+import UserAdmin from '../views/UserAdmin.vue';
+import Login from '../views/Login.vue';
+
+
 import Cart from '../views/Cart.vue';
 
 const routes = [
@@ -14,6 +19,21 @@ const routes = [
     name: 'ProductDetail',
     component: ProductDetail,
     props: true,
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
+  {
+    path: '/admin/users',
+    name: 'UserAdmin',
+    component: UserAdmin
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
   },
   {
     path: '/cart',

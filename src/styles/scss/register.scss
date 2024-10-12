@@ -1,0 +1,131 @@
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .security-form {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #e5e5e5;
+    transition: box-shadow 0.3s ease-in-out;
+  
+    &:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+  
+    .login-form {
+      text-align: center;
+  
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #333;
+        font-family: 'Poppins', sans-serif;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+    }
+  }
+  
+  .alert {
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 0.875rem;
+    font-weight: bold;
+  
+    &.alert-danger {
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+      color: #721c24;
+    }
+  
+    &.alert-success {
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+      color: #155724;
+    }
+  }
+  
+  .form-group {
+    position: relative;
+    margin-bottom: 25px;
+  
+    label {
+      font-size: 1rem;
+      color: #555;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="checkbox"] {
+        width: calc(100% - 20px);  // Correction: espace de 10px de chaque côté
+    // width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+      background-color: #fafafa;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      
+      &:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+        outline: none;
+      }
+    }
+  
+    input[type="checkbox"] {
+      width: auto;
+      margin-right: 10px;
+    }
+  
+    input::placeholder {
+      color: #bbb;
+    }
+  }
+  
+  button {
+    width: 100%;
+    padding: 12px;
+    background-color: #3498db;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #2980b9;
+    }
+  
+    &:focus {
+      outline: none;
+      background-color: #1d6fa5;
+      box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .container {
+      padding: 20px;
+      margin: 30px auto;
+    }
+  
+    button {
+      font-size: 1rem;
+    }
+  }
+
