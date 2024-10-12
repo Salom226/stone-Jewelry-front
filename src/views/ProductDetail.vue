@@ -7,8 +7,7 @@
       <h1 class="product-name">{{ product.name }}</h1>
       <p class="product-description">{{ product.description }}</p>
       <h3 class="product-price">{{ product.price }} EUR</h3>
-      <a :href="`/cart/add/${product.id}`" class="add-to-cart-btn">Ajouter au panier</a>
-      <router-link to="/" class="back-to-products-btn">Retour</router-link>
+      <button @click="addToCart(product.id)" class="add-to-cart-btn">Ajouter au panier</button>
     </div>
     <div class="suggested-products">
       <h2>Tu pourrais aussi aimer</h2>
@@ -16,7 +15,7 @@
         <div v-for="lastProduct in lastProducts" :key="lastProduct.id" class="suggested-product-card">
           <div class="product-link">
             <img :src="getProductImageUrl(lastProduct.image)" alt="Image du produit" class="suggested-product-image" />
-            <button class="add-to-cart-btn">Ajouter au panier</button>
+            <button class="add-to-cart-btn" @click="addToCart(product.id)">Ajouter au panier</button>
           </div>
           <div class="suggested-product-info">
             <h5 class="suggested-product-name">{{ lastProduct.name }}</h5>
@@ -30,6 +29,7 @@
 
 <script>
 import axios from 'axios';
+import { addToCart } from '../store/cart.store';
 
 export default {
   props: {
@@ -58,6 +58,9 @@ export default {
         .catch(error => {
           console.error(error);
         });
+    },
+    addToCart(productId) {
+      addToCart(productId);
     },
     getProductImageUrl(image) {
       return `http://localhost:8000/uploads/images/${image}`;
