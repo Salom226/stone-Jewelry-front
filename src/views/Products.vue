@@ -80,8 +80,7 @@ export default {
     }
   }
 };
-  </script>
-
+</script>
 <style lang="scss">
-@import '@/styles/scss/home.scss';
+  @import '@/styles/scss/home.scss';
 </style>

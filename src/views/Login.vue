@@ -84,31 +84,16 @@
             headers: {
               "Content-Type": "application/json",
             },
-            //  body:{ 
-            //   username: this.form.username,
-            //   password: this.form.password,
-            //   remember_me: this.form.rememberMe
-            // }
-            
         });
-        // const tokens = localStorage.getItem('tokens');
-        console.log(response);
-        // if (!tokens) {
-          /* Traitement dans le cas où aucun token n'existe dans le localStorage */
-        // }
-        
-        /* Le localStorage stocke les données sous forme de chaines de caractères nous transformons donc la donnée en JSON */
-        // const { accessToken, tokenType } = JSON.parse(tokens);
-        
-        /* On créer l'en-tête Authorization contenant le JWT */
-        // const headers = new Headers();
-        // headers.append('Authorization', `${tokenType} ${accessToken}`);
-        
-        // const options = {
-        //   method: 'GET',
-        //   mode: 'cors',
-        //   headers
-        // };
+        if (response.status !== 200 || !response.data.token) {
+          throw new Error('Invalid login credentials.');
+        }
+        // Sauvegarder le token dans le localStorage
+        const { token, tokenType } = response.data;
+        localStorage.setItem('token', JSON.stringify({
+          token,
+          tokenType
+        }));
 
         if (response.status !== 200) {
             throw new Error('Invalid login credentials.');
@@ -116,11 +101,11 @@
 
         // Rediriger vers la page d'accueil ou un chemin souhaité après une connexion réussie
         window.location.href = '/';
-    } catch (error) {
+        } catch (error) {
         // Afficher le message d'erreur en cas d'échec de la connexion
-        this.error = error.message;
-    }
-},
+          this.error = error.message;
+        }
+      },
       async fetchCsrfToken() {
         try {
           const response = await fetch('http://localhost:8000/get-csrf-token');

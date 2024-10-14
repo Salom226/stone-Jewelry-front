@@ -4,6 +4,8 @@ import ProductDetail from '../views/ProductDetail.vue';
 import Register from '../views/Register.vue';
 import UserAdmin from '../views/UserAdmin.vue';
 import Login from '../views/Login.vue';
+import Order from '../views/Order.vue';
+import Payment from '../views/Payment.vue';
 
 
 import Cart from '../views/Cart.vue';
@@ -39,6 +41,16 @@ const routes = [
     path: '/cart',
     name: 'Cart',
     component: Cart, 
+  },
+  {
+    path: '/order',
+    name: 'Order',
+    component: Order, 
+  },
+  {
+    path: '/payment',
+    name: 'Payment',
+    component: Payment, 
   },
 ];
 

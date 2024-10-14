@@ -51,3 +51,38 @@ export function clearCart() {
     localStorage.removeItem("cart");
     console.log("Le panier a été vidé.");
 }
+// Récupérer le contenu du panier
+export function getCart() {
+    let cart = localStorage.getItem("cart");
+    if (!cart) {
+        return {};
+    }
+    return JSON.parse(cart);
+}
+
+// Calculer le total des articles du panier
+export function getCartTotal(productsList) {
+    let cart = getCart();
+    let total = 0;
+
+    Object.keys(cart).forEach(productId => {
+        const product = productsList.find(p => p.id === productId);
+        if (product) {
+            total += product.price * cart[productId]; // Prix * quantité
+        }
+    });
+
+    return total;
+}
+
+// Récupérer la quantité totale d'articles dans le panier
+export function getCartItemCount() {
+    let cart = getCart();
+    let itemCount = 0;
+
+    Object.values(cart).forEach(quantity => {
+        itemCount += quantity;
+    });
+
+    return itemCount;
+}
