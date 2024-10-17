@@ -1,118 +1,122 @@
 <template>
-    <div class="container security-form">
-      <div class="login-form">
-        <h1>Inscription</h1>
-  
-        <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-        <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
-  
-        <form @submit.prevent="registerUser">
-          <div class="form-group">
-            <label for="email">Email:</label>
-            <input 
-              type="email" 
-              v-model="email" 
-              class="form-control" 
-              placeholder="Email" 
-              required />
-          </div>
-  
-          <div class="form-group">
-            <label for="firstName">Nom:</label>
-            <input 
-              type="text" 
-              v-model="firstName" 
-              class="form-control" 
-              placeholder="Nom" 
-              required />
-          </div>
-  
-          <div class="form-group">
-            <label for="lastName">Prénom:</label>
-            <input 
-              type="text" 
-              v-model="lastName" 
-              class="form-control" 
-              placeholder="Prénom" 
-              required />
-          </div>
-  
-          <div class="form-group">
-            <label for="password">Mot de passe:</label>
-            <input 
-              type="password" 
-              v-model="password" 
-              class="form-control" 
-              placeholder="Mot de passe" 
-              required />
-          </div>
-  
-          <div class="form-group">
-            <label for="agreeTerms">
-              <input 
-                type="checkbox" 
-                v-model="agreeTerms" 
-                required />
-              J'accepte les termes et conditions
-            </label>
-          </div>
-  
-          <button type="submit" class="btn btn-primary btn-block">S'inscrire</button>
-        </form>
+  <div class="container security-form">
+    <div class="login-form">
+      <h1>Inscription</h1>
+
+      <div v-if="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
       </div>
+      <div v-if="successMessage" class="alert alert-success">
+        {{ successMessage }}
+      </div>
+
+      <form @submit.prevent="registerUser">
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input
+            type="email"
+            v-model="email"
+            class="form-control"
+            placeholder="Email"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="firstName">Nom:</label>
+          <input
+            type="text"
+            v-model="firstName"
+            class="form-control"
+            placeholder="Nom"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Prénom:</label>
+          <input
+            type="text"
+            v-model="lastName"
+            class="form-control"
+            placeholder="Prénom"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Mot de passe:</label>
+          <input
+            type="password"
+            v-model="password"
+            class="form-control"
+            placeholder="Mot de passe"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="agreeTerms">
+            <input type="checkbox" v-model="agreeTerms" required />
+            J'accepte les termes et conditions
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">
+          S'inscrire
+        </button>
+      </form>
     </div>
-  </template>
-  
-  <script>
-  import axios from 'axios';
-  
-  export default {
-    data() {
-      return {
-        email: '',
-        firstName: '',
-        lastName: '',
-        password: '',
-        agreeTerms: false,
-        errorMessage: '',
-        successMessage: ''
-      };
-    },
-    methods: {
-      registerUser() {
-        // Validation supplémentaire si nécessaire
-        if (!this.agreeTerms) {
-          this.errorMessage = "Vous devez accepter les termes et conditions.";
-          return;
-        }
-  
-        // Envoyer les données au serveur Symfony via une requête POST
-        axios.post('http://localhost:8000/api/login/register', {
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      email: "",
+      firstName: "",
+      lastName: "",
+      password: "",
+      agreeTerms: false,
+      errorMessage: "",
+      successMessage: "",
+    };
+  },
+  methods: {
+    registerUser() {
+      // Validation supplémentaire si nécessaire
+      if (!this.agreeTerms) {
+        this.errorMessage = "Vous devez accepter les termes et conditions.";
+        return;
+      }
+
+      // Envoyer les données au serveur Symfony via une requête POST
+      axios
+        .post("http://localhost:8000/api/login/register", {
           email: this.email,
           firstName: this.firstName,
           lastName: this.lastName,
-          plainPassword: this.password
+          plainPassword: this.password,
         })
-        .then(response => {
+        .then((response) => {
           this.successMessage = "Inscription réussie !";
-          this.errorMessage = '';
-  
-          // Réinitialiser le formulaire
-          this.email = '';
-          this.firstName = '';
-          this.lastName = '';
-          this.password = '';
-          this.agreeTerms = false;
+          this.errorMessage = "";
+
+          // Redirect on home page
+          window.location.href = "/";
         })
-        .catch(error => {
+        .catch((error) => {
           this.errorMessage = "Une erreur est survenue lors de l'inscription.";
-          this.successMessage = '';
+          this.successMessage = "";
         });
-      }
-    }
-  };
-  </script>
+    },
+  },
+};
+</script>
 
 <style lang="scss">
-@import '@/styles/scss/register.scss';
+@import "@/styles/scss/register.scss";
 </style>

@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     fetchProducts(page = 1) {
-      axios.get(`http://localhost:8000/product?page=${page}`)
+      axios.get(`http://localhost:8000/products?page=${page}`)
       
         .then(response => {
             console.log(response.data); // Ajoutez cette ligne pour vérifier la réponse

@@ -49,7 +49,7 @@ export default {
   methods: {
     fetchProductDetails() {
       const productId = Number(this.id); // Assurez-vous que l'id est converti en nombre
-      axios.get(`http://localhost:8000/product/${productId}`)
+      axios.get(`http://localhost:8000/products/${productId}`)
         .then(response => {
           this.product = response.data.product;
           this.lastProducts = response.data.last_products;

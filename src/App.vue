@@ -1,15 +1,24 @@
 <script setup>
-  import Navbar from '@/views/Navbar.vue'; // Importez directement ici avec script setup
+import Navbar from "@/views/Navbar.vue"; // Importez directement ici avec script setup
+import { useUserStore } from "@/store/user.store";
+
+const userStore = useUserStore();
+userStore.init();
 </script>
 
 <template>
-  <div id="app">
+  <div class="app-global-container">
     <Navbar />
     <RouterView />
   </div>
 </template>
 
 <style scoped>
+.app-global-container {
+  width: 100%;
+  height: 100%;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

@@ -56,8 +56,12 @@ export default {
     },
     async loadCartItems(cart) {
   const productIds = Object.keys(cart).join(','); // Joindre les IDs en une chaîne séparée par des virgules
+  console.log(productIds); // Voir si la chaîne contient bien les IDs de produits
   try {
-    const response = await axios.get(`http://localhost:8000/product/filtered?ids=${productIds}`);
+    // const response = await axios.post('http://localhost:8000/api/cart-details', {
+          // productIds: productIds
+        // });
+    const response = await axios.get(`http://localhost:8000/products/filtered?ids=${productIds}`);
     const products = response.data;
     this.items = products.map(product => ({
       id: product.id,
