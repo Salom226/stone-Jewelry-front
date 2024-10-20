@@ -38,7 +38,7 @@
           >
             <div class="product-container">
               <div class="product-image-container">
-                <img class="product-image" :src="item.image" :alt="item.name" />
+                <img :src="getProductImageUrl(item.image)" :alt="item.name" class="product-image" />
                 <div class="product-tag">
                   <Tag
                     :value="item.inventoryStatus"
@@ -124,7 +124,7 @@ const createProductInTable = () => {
 };
 
 const editProduct = (productId) => {
-  // Implement product editing logic
+  router.push({ name: "EditProductAdmin", params: {id: productId} });
 };
 
 const confirmDeleteProduct = (product) => {
@@ -138,7 +138,7 @@ const confirmDeleteProduct = (product) => {
 
 const deleteProduct = async (productId) => {
   try {
-    const response = await new Api().delete(`/products/${productId}`);
+    const response = await new Api().delete(`/admin/products/${productId}`);
     showSuccess(response.data.message);
     await fetchProducts();
   } catch (error) {
@@ -184,6 +184,10 @@ const onSortChange = (event) => {
   sortOrder.value = sortValue;
   sortField.value = value.replace("!", "");
 };
+
+const getProductImageUrl = (image) => {
+  return `http://localhost:8000/uploads/images/${image}`;
+}
 
 onMounted(() => {
   fetchProducts();

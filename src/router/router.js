@@ -19,7 +19,8 @@ import AdminHome from "../views/admin/AdminHome.vue";
 // import CategoryEdit from "../views/CategoryEdit.vue";
 
 import CreateProductAdmin from "../views/admin/CreateProductAdmin.vue";
-
+import EditProductAdmin from "@/views/admin/EditProductAdmin.vue";
+import OrderValidation from "../views/OrderValidation.vue";
 // Routes d'administration groupées
 const adminRoutes = [
   {
@@ -41,6 +42,11 @@ const adminRoutes = [
     path: "products/new",
     name: "CreateProductAdmin",
     component: CreateProductAdmin,
+  },
+  {
+    path: "products/edit/:id",
+    name: "EditProductAdmin",
+    component: EditProductAdmin,
   },
   {
     path: "categories",
@@ -90,6 +96,11 @@ const routes = [
     path: "/order",
     name: "Order",
     component: Order,
+  },
+  {
+    path: "/orders/validation",
+    name: "OrderValidation",
+    component: OrderValidation,
   },
   {
     path: "/payment",

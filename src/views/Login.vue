@@ -101,9 +101,10 @@ export default {
 
         // Utiliser le store pour sauvegarder les informations de l'utilisateur
         this.userStore.setUser({ token, roles }, { saveToLocalStorage: true });
-
+        console.log(token);
         // Rediriger vers la page d'accueil
         this.$router.push("/");
+        this.emitter.emit('login');
       } catch (error) {
         this.error = error.message;
       }

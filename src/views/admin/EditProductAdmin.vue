@@ -1,7 +1,7 @@
 <template>
   <div class="create-product-admin">
-    <h1>Nouveau produit</h1>
-    <form @submit.prevent="createProduct" class="p-fluid">
+    <h1>Modifier produit</h1>
+    <form @submit.prevent="editProduct" class="p-fluid">
       <div class="p-field">
         <label for="name">Nom</label>
         <InputText id="name" v-model="product.name" required />
@@ -31,7 +31,7 @@
       </div>
       <Button
         type="submit"
-        label="Créer le produit"
+        label="Modifier le produit"
         icon="pi pi-check"
         class="p-mt-2"
       />
@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
@@ -50,7 +50,7 @@ import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
 import Toast from "primevue/toast";
 import { Api } from "@/helper/api";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const router = useRouter();
 
@@ -64,14 +64,28 @@ const product = ref({
   stock: 0,
 });
 
-const createProduct = async () => {
+const route = useRoute()
+
+const fetchProductDetails = () => {
+      const productId = Number(route.params.id); // Assurez-vous que l'id est converti en nombre
+      new Api().get(`/products/${productId}`)
+        .then(response => {
+          product.value = response.data.product;
+
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+
+const editProduct = async () => {
   try {
-    const response = await new Api().post("/admin/products", product.value);
-    showSuccess("Produit créé avec succès");
+    const response = await new Api().put("/admin/products/" + route.params.id, product.value);
+    showSuccess("Produit modifié avec succès");
     router.push({ name: "ProductAdmin" });
     // Reset form or redirect
   } catch (error) {
-    showError("Une erreur est survenue lors de la création du produit");
+    showError("Une erreur est survenue lors de la modification du produit");
   }
 };
 
@@ -92,6 +106,10 @@ const showError = (message) => {
     life: 3000,
   });
 };
+
+onMounted(() => {
+  fetchProductDetails();
+});
 </script>
 
 <style scoped>

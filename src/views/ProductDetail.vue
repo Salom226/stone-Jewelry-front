@@ -30,6 +30,7 @@
 <script>
 import axios from 'axios';
 import { addToCart } from '../store/cart.store';
+import { Api } from '@/helper/api';
 
 export default {
   props: {
@@ -49,7 +50,7 @@ export default {
   methods: {
     fetchProductDetails() {
       const productId = Number(this.id); // Assurez-vous que l'id est converti en nombre
-      axios.get(`http://localhost:8000/products/${productId}`)
+      new Api().get(`/products/${productId}`)
         .then(response => {
           this.product = response.data.product;
           this.lastProducts = response.data.last_products;

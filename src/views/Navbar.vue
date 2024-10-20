@@ -70,6 +70,9 @@ export default {
   mounted() {
     // Vérifier l'état de connexion au montage du composant
     this.checkLoginStatus();
+    this.emitter.on('login', () => {
+      this.checkLoginStatus();
+    })
   },
   methods: {
     // Vérifier si l'utilisateur est connecté (via le localStorage ou un autre mécanisme)

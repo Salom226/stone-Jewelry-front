@@ -174,28 +174,25 @@ const onValidateCategoryEdition = async (category) => {
     category.isAdding = false;
     await addCategory(category);
   } else {
-    await onRowEditSave(category.id);
+    await onRowEditSave(category);
   }
 };
 
 const onRowEditSave = async (category) => {
   try {
     editingRows.value = editingRows.value.filter((id) => id !== category.id);
-    const response = await new Api().put(`/categories/${categoryId}`, category);
+    const response = await new Api().put(`/categories/${category.id}`, category);
     console.log(response);
 
     const index = categories.value.findIndex(
-      (category) => category.id === categoryId
+      (category) => category.id === category.id
     );
     categories.value[index] = response.data;
     showSuccess("La catégorie a été mise à jour avec succès");
   } catch (error) {
+    console.error(error);
     showError("Une erreur est survenue lors de la mise à jour de la catégorie");
   }
-};
-
-const onRowEditCancel = (event) => {
-  // You can add logic here if needed when edit is cancelled
 };
 
 onMounted(() => {

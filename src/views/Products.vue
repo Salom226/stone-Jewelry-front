@@ -26,6 +26,7 @@
   <script>
 import axios from 'axios'; 
 import { addToCart } from '../store/cart.store';
+import { Api } from '@/helper/api';
 
 
 export default {
@@ -43,7 +44,7 @@ export default {
   },
   methods: {
     fetchProducts(page = 1) {
-      axios.get(`http://localhost:8000/products?page=${page}`)
+      new Api().get(`/products?page=${page}`)
       
         .then(response => {
             console.log(response.data); // Ajoutez cette ligne pour vérifier la réponse
