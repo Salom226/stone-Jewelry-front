@@ -7,7 +7,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     max-width: 1200px;
     margin: 2rem auto;
-    flex-wrap: wrap; /* Ajoutez ceci pour que les sections passent en dessous si l'écran est plus petit */
+    flex-wrap: wrap; 
   }
   
   .product-image-container {
@@ -142,8 +142,8 @@
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
           }
           .product-link {
-            position: relative; /* Pour le positionnement du bouton */
-            display: block; /* Pour s'assurer que le lien occupe tout l'espace */
+            position: relative;
+            display: block; 
           }
           .add-to-cart-btn {
             position: absolute; 

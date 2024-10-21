@@ -35,7 +35,7 @@ import { Api } from '@/helper/api';
 export default {
   props: {
     id: {
-      type: [Number, String], // Accepte à la fois les nombres et les chaînes de caractères
+      type: [Number, String], 
       required: true,
     },
   },
@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     fetchProductDetails() {
-      const productId = Number(this.id); // Assurez-vous que l'id est converti en nombre
+      const productId = Number(this.id); 
       new Api().get(`/products/${productId}`)
         .then(response => {
           this.product = response.data.product;

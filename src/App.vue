@@ -1,7 +1,6 @@
 <script setup>
-import Navbar from "@/views/Navbar.vue"; // Importez directement ici avec script setup
+import Navbar from "@/views/Navbar.vue"; 
 import { useUserStore } from "@/store/user.store";
-import Toast from "primevue/toast";
 
 const userStore = useUserStore();
 userStore.init();
@@ -9,7 +8,6 @@ userStore.init();
 
 <template>
   <div class="app-global-container">
-    <Toast />
     <Navbar />
     <RouterView />
   </div>
@@ -27,15 +25,12 @@ userStore.init();
   will-change: filter;
   transition: filter 300ms;
 }
-
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
-
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
 }
-
 .navbar {
   background-color: #2c3e50;
   padding: 10px 20px;

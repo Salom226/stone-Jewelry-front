@@ -24,7 +24,7 @@
       async addCategory() {
         try {
           await axios.post('/api/categories', { name: this.name });
-          this.$router.push({ name: 'CategoryList' });
+          this.$router.push({ name: 'CategoryList' }); 
         } catch (error) {
           console.error('Erreur lors de l\'ajout de la catégorie:', error);
         }

@@ -20,36 +20,16 @@
       <button :disabled="pagination.current_page === pagination.total_pages" @click="nextPage">Suivant</button>
     </div>
   </div>
-
-  <Toast />
 </template>
 
-
-<script>
-import axios from 'axios';
+  
+  <script>
+import axios from 'axios'; 
 import { addToCart } from '../store/cart.store';
 import { Api } from '@/helper/api';
-import Toast from "primevue/toast";
-import { useToast } from "primevue/usetoast";
 
 
 export default {
-  setup() {
-    const toast = useToast();
-
-    const showToast = (message) => {
-      toast.add({
-        severity: "success",
-        summary: "Succès",
-        detail: message,
-        life: 3000
-      });
-    };
-
-    return {
-      showToast,
-    };
-  },
   data() {
     return {
       products: [],
@@ -60,15 +40,14 @@ export default {
     };
   },
   mounted() {
-    this.fetchProducts(); // Appel de la méthode fetchProducts au montage
+    this.fetchProducts(); 
   },
   methods: {
     fetchProducts(page = 1) {
       new Api().get(`/products?page=${page}`)
-
+      
         .then(response => {
-          console.log(response.data); // Ajoutez cette ligne pour vérifier la réponse
-
+            console.log(response.data); 
           this.products = response.data.products;
           this.pagination = response.data.pagination;
         })
@@ -76,14 +55,15 @@ export default {
           console.error(error);
         });
     },
-    showSuccess(message) {
-      this.showToast(message);
-
-    },
     addToCart(productId) {
+      // axios.get(`http://localhost:8000/cart/add/${productId}`)
+      //   .then(response => {
+      //     console.log(response.data); 
+      //   })
+      //   .catch(error => {
+      //     console.error(error);
+      //   });
       addToCart(productId);
-      this.showSuccess("Produit ajouté au panier avec succès");
-      this.emitter.emit("cartUpdate");
     },
     nextPage() {
       if (this.pagination.current_page < this.pagination.total_pages) {
@@ -96,11 +76,11 @@ export default {
       }
     },
     getProductImageUrl(image) {
-      return `import.meta.env.VITE_API_UPLOAD_URL/images/${image}`;
+      return `${import.meta.env.VITE_API_UPLOAD_URL}/images/${image}`;
     }
   }
 };
 </script>
 <style lang="scss">
-@import '@/styles/scss/home.scss';
+  @import '@/styles/scss/home.scss';
 </style>
