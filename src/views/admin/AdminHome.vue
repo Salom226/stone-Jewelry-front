@@ -63,8 +63,6 @@ const navigateTo = (section) => {
 };
 
 const fetchSummaryData = () => {
-  // Implement API calls to fetch summary data
-  // This is a placeholder
   productCount.value = 100;
   orderCount.value = 25;
   userCount.value = 500;
@@ -102,5 +100,14 @@ h1 {
 
 :deep(.p-card-title) {
   color: var(--primary-color);
+}
+
+@media only screen and (max-width: 768px) {
+  .admin-menu {
+    flex-wrap: wrap;
+  }
+  .admin-summary {
+    flex-wrap: wrap;
+  }
 }
 </style>

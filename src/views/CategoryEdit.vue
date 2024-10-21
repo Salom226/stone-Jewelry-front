@@ -30,7 +30,7 @@
         const id = this.$route.params.id;
         try {
           await axios.put(`/api/categories/${id}`, { name: this.name });
-          this.$router.push({ name: 'CategoryList' }); // Rediriger vers la liste des catégories
+          this.$router.push({ name: 'CategoryList' });
         } catch (error) {
           console.error('Erreur lors de la modification de la catégorie:', error);
         }

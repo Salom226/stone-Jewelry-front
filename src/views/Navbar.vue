@@ -1,6 +1,5 @@
 <template>
   <Menubar :model="items">
-    <!-- Lien vers la page d'accueil (Logo ou autre contenu) -->
     <template #start>
       <router-link to="/">
         <svg

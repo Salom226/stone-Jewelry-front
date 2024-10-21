@@ -3,10 +3,8 @@
     <div class="login-form">
       <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
       <form @submit.prevent="handleLogin">
-        <!-- Error message -->
         <div v-if="error" class="alert alert-danger">{{ error }}</div>
 
-        <!-- Username (Email) field -->
         <div class="form-group">
           <label for="inputEmail">Email</label>
           <input
@@ -21,7 +19,6 @@
           />
         </div>
 
-        <!-- Password field -->
         <div class="form-group">
           <label for="inputPassword">Password</label>
           <input
@@ -35,22 +32,6 @@
           />
         </div>
 
-        <!-- CSRF Token -->
-        <input type="hidden" name="_csrf_token" :value="form.csrfToken" />
-
-        <!-- Remember Me checkbox -->
-        <div class="checkbox mb-3">
-          <label>
-            <input
-              v-model="form.rememberMe"
-              type="checkbox"
-              name="_remember_me"
-            />
-            Remember me
-          </label>
-        </div>
-
-        <!-- Submit button -->
         <button class="btn btn-lg btn-primary btn-block" type="submit">
           Sign in
         </button>
@@ -99,28 +80,18 @@ export default {
 
         const { token, roles } = response.data;
 
-        // Utiliser le store pour sauvegarder les informations de l'utilisateur
+        
         this.userStore.setUser({ token, roles }, { saveToLocalStorage: true });
         console.log(token);
-        // Rediriger vers la page d'accueil
+        
         this.$router.push("/");
         this.emitter.emit('login');
       } catch (error) {
         this.error = error.message;
       }
     },
-    async fetchCsrfToken() {
-      try {
-        const response = await fetch("http://localhost:8000/get-csrf-token");
-        const data = await response.json();
-        this.form.csrfToken = data.token;
-      } catch (error) {
-        this.error = "Failed to fetch CSRF token.";
-      }
-    },
   },
   mounted() {
-    // Charger l'utilisateur depuis le localStorage au montage du composant
     this.userStore.loadUserFromLocalStorage();
   },
 };

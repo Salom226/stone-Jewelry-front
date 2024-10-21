@@ -67,7 +67,7 @@ const product = ref({
 const route = useRoute()
 
 const fetchProductDetails = () => {
-      const productId = Number(route.params.id); // Assurez-vous que l'id est converti en nombre
+      const productId = Number(route.params.id);
       new Api().get(`/products/${productId}`)
         .then(response => {
           product.value = response.data.product;
@@ -83,7 +83,6 @@ const editProduct = async () => {
     const response = await new Api().put("/admin/products/" + route.params.id, product.value);
     showSuccess("Produit modifié avec succès");
     router.push({ name: "ProductAdmin" });
-    // Reset form or redirect
   } catch (error) {
     showError("Une erreur est survenue lors de la modification du produit");
   }

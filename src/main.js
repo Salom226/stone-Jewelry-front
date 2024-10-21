@@ -1,9 +1,8 @@
 import { createApp } from "vue";
 import PrimeVue from "primevue/config";
 import Aura from "@primevue/themes/aura";
-import "./style.css";
 import App from "./App.vue";
-import router from "./router/router"; // Importez votre fichier de routeur
+import router from "./router/router";
 import ToastService from "primevue/toastservice";
 import ConfirmationService from "primevue/confirmationservice";
 import "primeicons/primeicons.css";
@@ -14,7 +13,7 @@ const app = createApp(App);
 
 app.config.globalProperties.emitter = emitter;
 
-app.use(router); // Make sure the router is used
+app.use(router); 
 app.use(PrimeVue, {
   theme: {
     preset: Aura,

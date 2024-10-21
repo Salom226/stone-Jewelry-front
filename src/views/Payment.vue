@@ -1,5 +1,5 @@
 <template>
-    <div class="cart-container"> <!-- Ajout de la classe -->
+    <div class="cart-container">
       <h1>Mon Panier</h1>
       <div v-if="items && items.length">
         <div v-for="item in items" :key="item.id" class="cart-item">
@@ -8,12 +8,12 @@
           <p>Quantité : {{ item.quantity }}</p>
           <p>Prix unitaire : {{ item.price }} EUR</p>
           <p>Total pour ce produit : {{ item.price * item.quantity }} EUR</p>
-          <button @click="removeProductFromCart(item.id)" class="remove-btn">Retirer du panier</button> <!-- Ajout de la classe -->
+          <button @click="removeProductFromCart(item.id)" class="remove-btn">Retirer du panier</button> 
         </div>
         <div class="cart-total">
           <h3>Total du panier : {{ totalPrice }} EUR</h3>
         </div>
-        <button @click="clearCart" class="clear-cart-btn">Vider le panier</button> <!-- Ajout de la classe -->
+        <button @click="clearCart" class="clear-cart-btn">Vider le panier</button> 
       </div>
       <div v-else>
         <p class="empty-cart-message">Le panier est vide.</p>
@@ -29,33 +29,31 @@
   export default {
     data() {
       return {
-        items: [] // Tableau pour stocker les IDs et quantités
+        items: [] 
       };
     },
     computed: {
-      // Propriété calculée pour le prix total
       totalPrice() {
         return this.items.reduce((total, item) => {
           return total + item.price * item.quantity;
-        }, 0); // Initialisation de la somme à 0
+        }, 0);
       }
     },
     mounted() {
-      this.fetchCart(); // Charger les éléments du panier depuis le localStorage au montage du composant
+      this.fetchCart(); 
     },
     methods: {
       fetchCart() {
-        // Lire le panier depuis le localStorage
         let cart = localStorage.getItem("cart");
         if (cart) {
-          cart = JSON.parse(cart); // Convertir la chaîne JSON en objet
-          this.loadCartItems(cart); // Charger les éléments du panier
+          cart = JSON.parse(cart);
+          this.loadCartItems(cart); 
         } else {
-          this.items = []; // Panier vide
+          this.items = [];
         }
       },
       async loadCartItems(cart) {
-    const productIds = Object.keys(cart).join(','); // Joindre les IDs en une chaîne séparée par des virgules
+    const productIds = Object.keys(cart).join(','); 
     try {
       const response = await axios.get(`http://localhost:8000/products/filtered?ids=${productIds}`);
       const products = response.data;
@@ -71,28 +69,22 @@
       }
     },
       removeProductFromCart(productId) {
-      removeFromCart(productId); // Appelle la fonction pour retirer l'élément du panier
-      this.fetchCart(); // Recharger les éléments du panier après modification
+      removeFromCart(productId);
+      this.fetchCart(); 
     },
     clearCart() {
-      clearCart(); // Appelle la fonction pour vider le panier
-      this.fetchCart(); // Recharger les éléments du panier (qui sera vide)
+      clearCart();
+      this.fetchCart();
     },
      
-    //   loadCartItems(cart) {
-    //     // Transformer les données du panier (IDs et quantités) en tableau
-    //     this.items = Object.keys(cart).map(productId => ({
-    //       id: productId, // ID du produit
-    //       quantity: cart[productId] // Quantité correspondante
-    //     }));
     getProductImageUrl(image) {
         return `http://localhost:8000/uploads/images/${image}`;
   
     }
-      }
-  };
-  </script>
-  
-  <style lang="scss">
-  @import '@/styles/scss/cart.scss';
-  </style>
+  }
+};
+</script>
+
+<style lang="scss">
+@import '@/styles/scss/cart.scss';
+</style>

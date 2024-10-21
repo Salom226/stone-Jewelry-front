@@ -176,10 +176,8 @@ import { removeFromCart, clearCart } from '../store/cart.store';
       return `http://localhost:8000/uploads/images/${image}`;
 
   },
-      // Méthode pour soumettre le formulaire
       async submitForm() {
         try {
-          // Vous pouvez remplacer l'URL par celle de votre API Symfony
           const response = await fetch('http://localhost:8000/api/orders', {
             method: 'POST',
             headers: {

@@ -70,11 +70,9 @@ const orderInfo = ref({
 });
 
 const cities = ref([
-  // You should populate this with actual city data from your backend
   { name: "Paris", id: 1 },
   { name: "Lyon", id: 2 },
   { name: "Marseille", id: 3 },
-  // Add more cities as needed
 ]);
 
 onMounted(async () => {
@@ -102,13 +100,7 @@ const validateOrder = async () => {
       console.log(error);
       token = "my_token_test";
     }
-    // TODO manage error
-    // if (error) {
-    //   throw new Error(error.message);
-    // }
-    // const token = {
-    //   id: "tok_1Q7YKoP7dqdF5E8U0000000000000000",
-    // };
+  
     if (error) {
       token = "my_token_test";
     }
@@ -122,9 +114,6 @@ const validateOrder = async () => {
     });
 
     showSuccess("Commande validée avec succès");
-    // Clear cart
-    // localStorage.removeItem("cart");
-    // Redirect to order confirmation page
     router.push({
       name: "Products",
     });

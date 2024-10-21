@@ -102,7 +102,6 @@ const addUser = async () => {
     closeDialog();
   } catch (error) {
     console.error("Erreur lors de l'ajout de l'utilisateur:", error);
-    // Gérer l'erreur (par exemple, afficher un message d'erreur)
   }
 };
 </script>

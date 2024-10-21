@@ -56,16 +56,6 @@ export default {
           console.error(error);
         });
     },
-    addToCart(productId) {
-      // axios.get(`http://localhost:8000/cart/add/${productId}`)
-      //   .then(response => {
-      //     console.log(response.data); 
-      //   })
-      //   .catch(error => {
-      //     console.error(error);
-      //   });
-      addToCart(productId);
-    },
     nextPage() {
       if (this.pagination.current_page < this.pagination.total_pages) {
         this.fetchProducts(this.pagination.current_page + 1);

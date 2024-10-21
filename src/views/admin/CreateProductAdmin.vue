@@ -69,7 +69,6 @@ const createProduct = async () => {
     const response = await new Api().post("/admin/products", product.value);
     showSuccess("Produit créé avec succès");
     router.push({ name: "ProductAdmin" });
-    // Reset form or redirect
   } catch (error) {
     showError("Une erreur est survenue lors de la création du produit");
   }
