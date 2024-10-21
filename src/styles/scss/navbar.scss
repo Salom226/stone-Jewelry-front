@@ -1,3 +1,9 @@
 .navbar-end a {
-    margin-right: 16px;
+  margin-right: 16px;
+}
+
+.items-center {
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }

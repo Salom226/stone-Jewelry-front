@@ -20,16 +20,36 @@
       <button :disabled="pagination.current_page === pagination.total_pages" @click="nextPage">Suivant</button>
     </div>
   </div>
+
+  <Toast />
 </template>
 
-  
-  <script>
-import axios from 'axios'; 
+
+<script>
+import axios from 'axios';
 import { addToCart } from '../store/cart.store';
 import { Api } from '@/helper/api';
+import Toast from "primevue/toast";
+import { useToast } from "primevue/usetoast";
 
 
 export default {
+  setup() {
+    const toast = useToast();
+
+    const showToast = (message) => {
+      toast.add({
+        severity: "success",
+        summary: "Succès",
+        detail: message,
+        life: 3000
+      });
+    };
+
+    return {
+      showToast,
+    };
+  },
   data() {
     return {
       products: [],
@@ -45,9 +65,9 @@ export default {
   methods: {
     fetchProducts(page = 1) {
       new Api().get(`/products?page=${page}`)
-      
+
         .then(response => {
-            console.log(response.data); // Ajoutez cette ligne pour vérifier la réponse
+          console.log(response.data); // Ajoutez cette ligne pour vérifier la réponse
 
           this.products = response.data.products;
           this.pagination = response.data.pagination;
@@ -55,6 +75,15 @@ export default {
         .catch(error => {
           console.error(error);
         });
+    },
+    showSuccess(message) {
+      this.showToast(message);
+
+    },
+    addToCart(productId) {
+      addToCart(productId);
+      this.showSuccess("Produit ajouté au panier avec succès");
+      this.emitter.emit("cartUpdate");
     },
     nextPage() {
       if (this.pagination.current_page < this.pagination.total_pages) {
@@ -73,5 +102,5 @@ export default {
 };
 </script>
 <style lang="scss">
-  @import '@/styles/scss/home.scss';
+@import '@/styles/scss/home.scss';
 </style>

@@ -6,7 +6,9 @@ import router from "./router/router";
 import ToastService from "primevue/toastservice";
 import ConfirmationService from "primevue/confirmationservice";
 import "primeicons/primeicons.css";
-import mitt from 'mitt';
+import mitt from "mitt";
+import Toast from "primevue/toast";
+
 const emitter = mitt();
 
 const app = createApp(App);
@@ -20,5 +22,6 @@ app.use(PrimeVue, {
   },
 });
 app.use(ToastService);
+app.component("Toast", Toast);
 app.use(ConfirmationService);
 app.mount("#app");

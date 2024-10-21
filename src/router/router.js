@@ -12,11 +12,6 @@ import Payment from "../views/Payment.vue";
 import Cart from "../views/Cart.vue";
 
 import AdminHome from "../views/admin/AdminHome.vue";
-// import UserAdmin from "../views/admin/UserAdmin.vue";
-// import ProductAdmin from "../views/admin/ProductAdmin.vue";
-// import CategoriesAdmin from "../views/admin/CategoriesAdmin.vue";
-// import CategoryNew from "../views/CategoryNew.vue";
-// import CategoryEdit from "../views/CategoryEdit.vue";
 
 import CreateProductAdmin from "../views/admin/CreateProductAdmin.vue";
 import EditProductAdmin from "@/views/admin/EditProductAdmin.vue";
@@ -62,6 +57,16 @@ const adminRoutes = [
     path: "categories/:id/edit",
     name: "CategoryEdit",
     component: () => import("../views/CategoryEdit.vue"),
+  },
+  {
+    path: "orders",
+    name: "OrderAdmin",
+    component: () => import("../views/admin/OrderAdmin.vue"),
+  },
+  {
+    path: "orders/validate/:id",
+    name: "ValidateOrder",
+    component: () => import("../views/admin/ValidateOrder.vue"),
   },
 ];
 

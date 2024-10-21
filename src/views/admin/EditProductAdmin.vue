@@ -12,14 +12,7 @@
       </div>
       <div class="p-field">
         <label for="price">Prix</label>
-        <InputNumber
-          id="price"
-          v-model="product.price"
-          mode="currency"
-          currency="EUR"
-          locale="fr-FR"
-          required
-        />
+        <InputNumber id="price" v-model="product.price" mode="currency" currency="EUR" locale="fr-FR" required />
       </div>
       <div class="p-field">
         <label for="image">Image URL</label>
@@ -29,15 +22,8 @@
         <label for="stock">Stock</label>
         <InputNumber id="stock" v-model="product.stock" :min="0" required />
       </div>
-      <Button
-        type="submit"
-        label="Modifier le produit"
-        icon="pi pi-check"
-        class="p-mt-2"
-      />
+      <Button type="submit" label="Modifier le produit" icon="pi pi-check" class="p-mt-2" />
     </form>
-
-    <Toast />
   </div>
 </template>
 
@@ -67,16 +53,16 @@ const product = ref({
 const route = useRoute()
 
 const fetchProductDetails = () => {
-      const productId = Number(route.params.id);
-      new Api().get(`/products/${productId}`)
-        .then(response => {
-          product.value = response.data.product;
+  const productId = Number(route.params.id);
+  new Api().get(`/products/${productId}`)
+    .then(response => {
+      product.value = response.data.product;
 
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    }
+    })
+    .catch(error => {
+      console.error(error);
+    });
+}
 
 const editProduct = async () => {
   try {
