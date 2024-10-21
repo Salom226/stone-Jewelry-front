@@ -7,29 +7,14 @@
 
         <div class="form-group">
           <label for="inputEmail">Email</label>
-          <input
-            v-model="form.username"
-            type="email"
-            name="_username"
-            id="inputEmail"
-            class="form-control"
-            placeholder="Enter your email"
-            required
-            autofocus
-          />
+          <input v-model="form.username" type="email" name="_username" id="inputEmail" class="form-control"
+            placeholder="Enter your email" required autofocus />
         </div>
 
         <div class="form-group">
           <label for="inputPassword">Password</label>
-          <input
-            v-model="form.password"
-            type="password"
-            name="_password"
-            id="inputPassword"
-            class="form-control"
-            placeholder="Enter your password"
-            required
-          />
+          <input v-model="form.password" type="password" name="_password" id="inputPassword" class="form-control"
+            placeholder="Enter your password" required />
         </div>
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">
@@ -61,7 +46,7 @@ export default {
     async handleLogin() {
       try {
         const response = await axios.post(
-          "http://localhost:8000/api/login",
+          import.meta.env.VITE_API_URL + "/login",
           {
             username: this.form.username,
             password: this.form.password,
@@ -80,10 +65,10 @@ export default {
 
         const { token, roles } = response.data;
 
-        
+
         this.userStore.setUser({ token, roles }, { saveToLocalStorage: true });
         console.log(token);
-        
+
         this.$router.push("/");
         this.emitter.emit('login');
       } catch (error) {

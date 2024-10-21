@@ -1,21 +1,11 @@
 <template>
   <div class="user-admin">
     <h1>Gestion des utilisateurs</h1>
-    <Button
-      label="Ajouter un utilisateur"
-      icon="pi pi-plus"
-      @click="openAddUserDialog"
-    />
-    <DataTable
-      :value="users"
-      :paginator="true"
-      :rows="10"
-      dataKey="id"
-      :rowHover="true"
+    <Button label="Ajouter un utilisateur" icon="pi pi-plus" @click="openAddUserDialog" />
+    <DataTable :value="users" :paginator="true" :rows="10" dataKey="id" :rowHover="true"
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
       :rowsPerPageOptions="[5, 10, 20, 50]"
-      currentPageReportTemplate="Affichage {first} à {last} sur {totalRecords} utilisateurs"
-    >
+      currentPageReportTemplate="Affichage {first} à {last} sur {totalRecords} utilisateurs">
       <Column field="id" header="ID" sortable></Column>
       <Column field="email" header="Email" sortable></Column>
       <Column field="roles" header="Rôles" sortable>
@@ -25,24 +15,15 @@
       </Column>
       <Column header="Actions">
         <template #body="slotProps">
-          <Button
-            icon="pi pi-user-edit"
-            class="p-button-rounded p-button-success p-mr-2"
-            @click="addEditorRole(slotProps.data.id)"
-          />
-          <Button
-            icon="pi pi-trash"
-            class="p-button-rounded p-button-danger"
-            @click="confirmRemoveUser(slotProps.data)"
-          />
+          <Button icon="pi pi-user-edit" class="p-button-rounded p-button-success p-mr-2"
+            @click="addEditorRole(slotProps.data.id)" />
+          <Button icon="pi pi-trash" class="p-button-rounded p-button-danger"
+            @click="confirmRemoveUser(slotProps.data)" />
         </template>
       </Column>
     </DataTable>
 
-    <AddUserDialog
-      v-model:visible="addUserDialogVisible"
-      @user-added="onUserAdded"
-    />
+    <AddUserDialog v-model:visible="addUserDialogVisible" @user-added="onUserAdded" />
 
     <Toast />
     <ConfirmDialog></ConfirmDialog>
@@ -83,7 +64,7 @@ const fetchUsers = async () => {
 const addEditorRole = async (userId) => {
   try {
     const response = await axios.patch(
-      `http://localhost:8000/api/user/${userId}/to/editor`
+      `${import.meta.env.VITE_API_URL}/user/${userId}/to/editor`
     );
     showSuccess(response.data.message);
     await fetchUsers();
@@ -162,5 +143,4 @@ h1 {
 .p-button {
   margin-bottom: 20px;
 }
-
 </style>

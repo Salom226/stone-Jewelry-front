@@ -6,6 +6,7 @@ import router from "./router/router";
 import ToastService from "primevue/toastservice";
 import ConfirmationService from "primevue/confirmationservice";
 import "primeicons/primeicons.css";
+import "./style.css";
 import mitt from "mitt";
 import Toast from "primevue/toast";
 
@@ -15,7 +16,7 @@ const app = createApp(App);
 
 app.config.globalProperties.emitter = emitter;
 
-app.use(router); 
+app.use(router);
 app.use(PrimeVue, {
   theme: {
     preset: Aura,

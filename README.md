@@ -35,8 +35,8 @@ Démarrer le serveur Symfony
 
 Une fois le projet créé, naviguez dans le répertoire et démarrez le serveur de développement Symfony :
 
-``cd backend``
-``symfony serve``
+`cd backend`
+`symfony serve`
 Le serveur sera accessible par défaut sur http://localhost:8000.
 
 Configurer la base de données
@@ -67,48 +67,47 @@ Une fois le projet créé, naviguez dans le répertoire et démarrez le serveur 
 Le serveur Vue.js sera accessible par défaut sur http://localhost:8080.
 
 Configurer la communication entre Front-end et Back-end
+
 1. CORS (Cross-Origin Resource Sharing) dans Symfony
-Pour permettre à Vue.js de communiquer avec votre API Symfony, il est nécessaire de configurer le CORS. Installez le bundle nelmio/cors-bundle dans votre projet Symfony :
+   Pour permettre à Vue.js de communiquer avec votre API Symfony, il est nécessaire de configurer le CORS. Installez le bundle nelmio/cors-bundle dans votre projet Symfony :
 
 `composer require nelmio/cors-bundle`
 Ensuite, configurez le bundle dans config/packages/nelmio_cors.yaml :
 
 nelmio_cors:
-    defaults:
-        allow_origin: ['http://localhost:8080']
-        allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'DELETE']
-        allow_headers: ['Content-Type', 'Authorization']
-        expose_headers: ['Link']
-        max_age: 3600
-    paths:
-        '^/': ~
+defaults:
+allow_origin: ['http://localhost:8080']
+allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'DELETE']
+allow_headers: ['Content-Type', 'Authorization']
+expose_headers: ['Link']
+max_age: 3600
+paths:
+'^/': ~
 Cela autorisera les requêtes provenant de http://localhost:8080 (le serveur Vue.js) vers votre API Symfony.
 
 2. Appeler l'API Symfony depuis Vue.js
-Dans vos composants Vue, utilisez axios ou fetch pour effectuer des requêtes vers l'API Symfony. Installez axios dans le projet Vue.js :
-
+   Dans vos composants Vue, utilisez axios ou fetch pour effectuer des requêtes vers l'API Symfony. Installez axios dans le projet Vue.js :
 
 `npm install axios`
 Puis, dans un fichier Vue :
 
-
 `import axios from 'axios';`
 
 export default {
-  data() {
-    return {
-      products: []
-    };
-  },
-  mounted() {
-    axios.get('http://localhost:8000/api/products')
-      .then(response => {
-        this.products = response.data;
-      })
-      .catch(error => {
-        console.error('Error fetching products:', error);
-      });
-  }
+data() {
+return {
+products: []
+};
+},
+mounted() {
+axios.get(http://localhost:8000/api/products')
+.then(response => {
+this.products = response.data;
+})
+.catch(error => {
+console.error('Error fetching products:', error);
+});
+}
 };
 Assurez-vous de bien remplacer l'URL par celle de votre serveur Symfony.
 
@@ -123,7 +122,6 @@ Vue.js
 Démarrer le serveur de développement : npm run serve
 Ajouter un package : npm install <package_name>
 Compiler pour la production : npm run build
-
 
 ## Installer PrimeVue
 

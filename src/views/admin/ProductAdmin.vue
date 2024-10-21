@@ -1,49 +1,23 @@
 <template>
   <div class="products-admin">
     <h1>Gestion des produits</h1>
-    <Button
-      label="Ajouter un produit"
-      icon="pi pi-plus"
-      @click="createProductInTable"
-    />
+    <Button label="Ajouter un produit" icon="pi pi-plus" @click="createProductInTable" />
     <div v-if="loading" class="loading-container">
-      <ProgressSpinner
-        style="width: 50px; height: 50px"
-        strokeWidth="4"
-        animationDuration=".5s"
-      />
+      <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="4" animationDuration=".5s" />
     </div>
-    <DataView
-      v-else
-      :value="products"
-      :sortOrder="sortOrder"
-      :sortField="sortField"
-      layout="list"
-    >
+    <DataView v-else :value="products" :sortOrder="sortOrder" :sortField="sortField" layout="list">
       <template #header>
-        <Select
-          v-model="sortKey"
-          :options="sortOptions"
-          optionLabel="label"
-          placeholder="Trier par prix"
-          @change="onSortChange($event)"
-        />
+        <Select v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Trier par prix"
+          @change="onSortChange($event)" />
       </template>
       <template #list="slotProps">
         <div class="product-list">
-          <div
-            v-for="(item, index) in slotProps.items"
-            :key="index"
-            class="product-item"
-          >
+          <div v-for="(item, index) in slotProps.items" :key="index" class="product-item">
             <div class="product-container">
               <div class="product-image-container">
                 <img :src="getProductImageUrl(item.image)" :alt="item.name" class="product-image" />
                 <div class="product-tag">
-                  <Tag
-                    :value="item.inventoryStatus"
-                    :severity="getSeverity(item)"
-                  ></Tag>
+                  <Tag :value="item.inventoryStatus" :severity="getSeverity(item)"></Tag>
                 </div>
               </div>
               <div class="product-details">
@@ -54,16 +28,10 @@
                 <div class="product-actions">
                   <span class="product-price">{{ item.price }}€</span>
                   <div class="product-buttons">
-                    <Button
-                      icon="pi pi-pencil"
-                      @click="editProduct(item.id)"
-                      class="p-button-rounded p-button-success"
-                    />
-                    <Button
-                      icon="pi pi-trash"
-                      @click="confirmDeleteProduct(item)"
-                      class="p-button-rounded p-button-danger"
-                    />
+                    <Button icon="pi pi-pencil" @click="editProduct(item.id)"
+                      class="p-button-rounded p-button-success" />
+                    <Button icon="pi pi-trash" @click="confirmDeleteProduct(item)"
+                      class="p-button-rounded p-button-danger" />
                   </div>
                 </div>
               </div>
@@ -124,7 +92,7 @@ const createProductInTable = () => {
 };
 
 const editProduct = (productId) => {
-  router.push({ name: "EditProductAdmin", params: {id: productId} });
+  router.push({ name: "EditProductAdmin", params: { id: productId } });
 };
 
 const confirmDeleteProduct = (product) => {
@@ -186,7 +154,7 @@ const onSortChange = (event) => {
 };
 
 const getProductImageUrl = (image) => {
-  return `http://localhost:8000/uploads/images/${image}`;
+  return `${import.meta.env.VITE_API_UPLOAD_URL}/images/${image}`;
 }
 
 onMounted(() => {

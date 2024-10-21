@@ -13,46 +13,22 @@
       <form @submit.prevent="registerUser">
         <div class="form-group">
           <label for="email">Email:</label>
-          <input
-            type="email"
-            v-model="email"
-            class="form-control"
-            placeholder="Email"
-            required
-          />
+          <input type="email" v-model="email" class="form-control" placeholder="Email" required />
         </div>
 
         <div class="form-group">
           <label for="firstName">Nom:</label>
-          <input
-            type="text"
-            v-model="firstName"
-            class="form-control"
-            placeholder="Nom"
-            required
-          />
+          <input type="text" v-model="firstName" class="form-control" placeholder="Nom" required />
         </div>
 
         <div class="form-group">
           <label for="lastName">Prénom:</label>
-          <input
-            type="text"
-            v-model="lastName"
-            class="form-control"
-            placeholder="Prénom"
-            required
-          />
+          <input type="text" v-model="lastName" class="form-control" placeholder="Prénom" required />
         </div>
 
         <div class="form-group">
           <label for="password">Mot de passe:</label>
-          <input
-            type="password"
-            v-model="password"
-            class="form-control"
-            placeholder="Mot de passe"
-            required
-          />
+          <input type="password" v-model="password" class="form-control" placeholder="Mot de passe" required />
         </div>
 
         <div class="form-group">
@@ -95,7 +71,7 @@ export default {
 
       // Envoyer les données au serveur Symfony via une requête POST
       axios
-        .post("http://localhost:8000/api/login/register", {
+        .post("import.meta.env.VITE_API_URL/login/register", {
           email: this.email,
           firstName: this.firstName,
           lastName: this.lastName,

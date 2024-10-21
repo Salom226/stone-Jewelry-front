@@ -30,13 +30,8 @@
         <label for="card-element">Informations de paiement</label>
         <div id="card-element" ref="cardElement"></div>
       </div>
-      <Button
-        type="submit"
-        label="Payer et finaliser la commande"
-        icon="pi pi-check"
-        class="p-mt-2"
-        :loading="loading"
-      />
+      <Button type="submit" label="Payer et finaliser la commande" icon="pi pi-check" class="p-mt-2"
+        :loading="loading" />
     </form>
 
     <Toast />
@@ -68,12 +63,6 @@ const orderInfo = ref({
   address: "",
   city: "",
 });
-
-const cities = ref([
-  { name: "Paris", id: 1 },
-  { name: "Lyon", id: 2 },
-  { name: "Marseille", id: 3 },
-]);
 
 onMounted(async () => {
   stripe.value = await loadStripe(
@@ -114,6 +103,10 @@ const validateOrder = async () => {
     });
 
     showSuccess("Commande validée avec succès");
+    // Clear cart
+    localStorage.removeItem("cart");
+
+    // Redirect to order confirmation page
     router.push({
       name: "Products",
     });

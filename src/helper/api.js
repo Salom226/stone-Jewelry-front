@@ -6,7 +6,7 @@ const userStore = useUserStore();
 export class Api {
   constructor() {
     this.userStore = useUserStore();
-    this.baseUrl = "http://localhost:8000/api";
+    this.baseUrl = import.meta.env.VITE_API_URL;
   }
 
   get(url, options = {}) {

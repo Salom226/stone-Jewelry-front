@@ -3,11 +3,7 @@
     <h1>Mon Panier</h1>
     <div v-if="items && items.length">
       <div v-for="item in items" :key="item.id" class="cart-item">
-        <img
-          :src="getProductImageUrl(item.image)"
-          alt="Image du produit"
-          class="product-image"
-        />
+        <img :src="getProductImageUrl(item.image)" alt="Image du produit" class="product-image" />
         <h5>{{ item.name }}</h5>
         <p>Quantité : {{ item.quantity }}</p>
         <p>Prix unitaire : {{ item.price }} EUR</p>
@@ -20,18 +16,9 @@
         <h3>Total du panier : {{ totalPrice }} EUR</h3>
       </div>
       <div class="cart-buttons">
-        <Button
-          @click="validateOrder"
-          label="Passer la commande"
-          class="p-button-success order-btn"
-          icon="pi pi-shopping-cart"
-        />
-        <Button
-          @click="clearCart"
-          label="Vider le panier"
-          class="p-button-danger"
-          icon="pi pi-trash"
-        />
+        <Button @click="validateOrder" label="Passer la commande" class="p-button-success order-btn"
+          icon="pi pi-shopping-cart" />
+        <Button @click="clearCart" label="Vider le panier" class="p-button-danger" icon="pi pi-trash" />
       </div>
     </div>
     <div v-else>
@@ -67,24 +54,24 @@ export default {
     },
   },
   mounted() {
-    this.fetchCart(); 
+    this.fetchCart();
   },
   methods: {
     fetchCart() {
       let cart = localStorage.getItem("cart");
       if (cart) {
         console.log(cart);
-        cart = JSON.parse(cart); 
-        this.loadCartItems(cart); 
+        cart = JSON.parse(cart);
+        this.loadCartItems(cart);
       } else {
         this.items = [];
       }
     },
     async loadCartItems(cart) {
-      const productIds = Object.keys(cart).join(","); 
+      const productIds = Object.keys(cart).join(",");
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/products/filtered?ids=${productIds}`
+          `${import.meta.env.VITE_API_URL}/products/filtered?ids=${productIds}`
         );
         const products = response.data;
         this.items = products.map((product) => ({
@@ -100,7 +87,7 @@ export default {
     },
     removeProductFromCart(productId) {
       removeFromCart(productId);
-      this.fetchCart(); 
+      this.fetchCart();
     },
     clearCart() {
       clearCart();
@@ -115,7 +102,7 @@ export default {
     },
 
     getProductImageUrl(image) {
-      return `http://localhost:8000/uploads/images/${image}`;
+      return `${import.meta.env.VITE_API_UPLOAD_URL}/images/${image}`;
     },
   },
 };

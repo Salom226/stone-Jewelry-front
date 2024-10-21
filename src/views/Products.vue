@@ -96,7 +96,7 @@ export default {
       }
     },
     getProductImageUrl(image) {
-      return `http://localhost:8000/uploads/images/${image}`;
+      return `import.meta.env.VITE_API_UPLOAD_URL/images/${image}`;
     }
   }
 };
