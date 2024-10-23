@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Produits</h1>
+    <!-- <h1>Produits</h1> -->
     <div class="products-container">
       <div v-for="product in products" :key="product.id" class="product-card">
         <router-link :to="`/product/${product.id}`">

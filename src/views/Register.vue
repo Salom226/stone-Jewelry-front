@@ -63,15 +63,12 @@ export default {
   },
   methods: {
     registerUser() {
-      // Validation supplémentaire si nécessaire
       if (!this.agreeTerms) {
         this.errorMessage = "Vous devez accepter les termes et conditions.";
         return;
       }
-
-      // Envoyer les données au serveur Symfony via une requête POST
       axios
-        .post("import.meta.env.VITE_API_URL/login/register", {
+        .post(`${import.meta.env.VITE_API_BASE_URL}`, {
           email: this.email,
           firstName: this.firstName,
           lastName: this.lastName,
@@ -81,7 +78,6 @@ export default {
           this.successMessage = "Inscription réussie !";
           this.errorMessage = "";
 
-          // Redirect on home page
           window.location.href = "/";
         })
         .catch((error) => {

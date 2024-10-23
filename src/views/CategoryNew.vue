@@ -23,7 +23,9 @@
     methods: {
       async addCategory() {
         try {
-          await axios.post('/api/categories', { name: this.name });
+          await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/categories`, {
+          name: this.name
+        });
           this.$router.push({ name: 'CategoryList' }); 
         } catch (error) {
           console.error('Erreur lors de l\'ajout de la catégorie:', error);

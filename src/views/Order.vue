@@ -132,7 +132,7 @@ import { removeFromCart, clearCart } from '../store/cart.store';
     async loadCartItems(cart) {
   const productIds = Object.keys(cart).join(','); 
   try {
-    const response = await axios.get(`http://localhost:8000/products/filtered?ids=${productIds}`);
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/filtered?ids=${productIds}`);
     const products = response.data;
     this.items = products.map(product => ({
       id: product.id,
