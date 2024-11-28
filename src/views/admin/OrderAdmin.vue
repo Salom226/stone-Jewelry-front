@@ -14,7 +14,7 @@
           <div v-for="(item, index) in slotProps.items" :key="index" class="order-item">
             <div class="order-container">
               <div class="order-date">
-                {{ item.createdAt }}
+                {{ formatDate(item.createdAt) }}
               </div>
               <div class="order-names">
                 <div>{{ item.firstName }}</div>
@@ -71,8 +71,8 @@ const sortOptions = ref([
   { label: "Plus récentes", value: "!createdAt" },
   { label: "Plus anciennes", value: "createdAt" },
 ]);
-const sortOrder = ref(1);
-const sortField = ref("");
+const sortOrder = ref(-1);
+const sortField = ref("createdAt");
 const sortKey = ref(null);
 
 let loading = ref(false);
@@ -82,7 +82,10 @@ const fetchOrders = async () => {
   try {
     const response = await new Api().get("/admin/orders");
     loading.value = false;
-    orders.value = response.data;
+    orders.value = response.data.map(o => ({
+      ...o,
+      createdAt: new Date(o.createdAt)
+    }));
   } catch (error) {
     loading.value = false;
     showError("Une erreur est survenue lors de la récupération des commandes");
@@ -141,6 +144,10 @@ const onSortChange = (event) => {
   sortOrder.value = sortValue;
   sortField.value = value.replace("!", "");
 };
+
+const formatDate = (date) => {
+  return date.toLocaleDateString("fr-FR", { hour: "2-digit", minute: "2-digit", second: "2-digit"});
+}
 
 onMounted(() => {
   fetchOrders();

@@ -93,7 +93,7 @@ const fetchCategories = async () => {
     loading.value = true;
   }
   try {
-    const response = await new Api().get("/categories");
+    const response = await new Api().get("/admin/categories");
     loading.value = false;
     categories.value = response.data;
   } catch (error) {
@@ -113,7 +113,7 @@ const createCategoryInTable = () => {
 
 const addCategory = async (category) => {
   try {
-    const response = await new Api().post("/categories", {
+    const response = await new Api().post("/admin/categories", {
       name: category.name,
     });
     showSuccess("La catégorie a été ajoutée avec succès");
@@ -122,6 +122,7 @@ const addCategory = async (category) => {
     showError("Une erreur est survenue lors de l'ajout de la catégorie");
   }
 };
+
 
 const editCategory = (categoryId) => {
   editingRows.value.push(categoryId);
@@ -138,7 +139,7 @@ const confirmDeleteCategory = (category) => {
 
 const deleteCategory = async (categoryId) => {
   try {
-    const response = await new Api().delete(`/categories/${categoryId}`);
+    const response = await new Api().delete(`/admin/categories/${categoryId}`);
     showSuccess(response.data.message);
     await fetchCategories();
   } catch (error) {
@@ -181,7 +182,7 @@ const onValidateCategoryEdition = async (category) => {
 const onRowEditSave = async (category) => {
   try {
     editingRows.value = editingRows.value.filter((id) => id !== category.id);
-    const response = await new Api().put(`/categories/${category.id}`, category);
+    const response = await new Api().put(`/admin/categories/${category.id}`, category);
     console.log(response);
 
     const index = categories.value.findIndex(

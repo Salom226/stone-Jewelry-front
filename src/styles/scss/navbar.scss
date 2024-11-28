@@ -1,9 +1,190 @@
+.custom-submenu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.custom-submenu:hover .custom-submenu-content {
+  display: block;
+}
+
+.custom-submenu-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.navbar-end {
+  position: relative;
+}
+
 .navbar-end a {
-  margin-right: 16px;
+  margin-right: 1.6rem;
 }
 
 .items-center {
   display: flex;
-  gap: 5px;
+  gap: 0.5rem;
   align-items: center;
+}
+
+.p-menubar {
+  font-family: "ITC";
+}
+
+.p-menubar a {
+  font-family: "ITC";
+  color: rgb(84, 107, 105);
+}
+
+.app-global-container {
+  width: 100%;
+  height: 100%;
+}
+
+.logo {
+  height: 6rem;
+  padding: 1.5rem;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.pi {
+  padding-bottom: 0.20rem;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.logo.vue:hover {
+  filter: drop-shadow(0 0 2em #42b883aa);
+}
+
+.navbar {
+  background-color: #2c3e50;
+  padding: .62rem 1.25rem;
+}
+
+.navbar-list {
+  list-style-type: none;
+  display: flex;
+  gap: .94rem;
+}
+
+.navbar-list li {
+  display: inline;
+}
+
+.navbar-list a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.navbar-list a:hover {
+  text-decoration: underline;
+}
+
+/* Styles pour le conteneur principal des sous-menus */
+.submenu {
+  display: flex;
+  align-items: center;
+  color: rgb(84, 107, 105); /* Couleur par défaut */
+  cursor: pointer; /* Curseur en doigt */
+  transition: color 0.3s, background-color 0.3s; /* Transition douce */
+  position: relative; /* Nécessaire pour le positionnement du contenu déroulant */
+  text-transform: uppercase; /* Mettre le texte en majuscule */
+  margin-left: 0; /* Supprimer la marge à gauche */
+  background-color: transparent; /* Pas de fond pour le conteneur principal */
+}
+
+/* Fond et texte du conteneur parent (titre principal du sous-menu) au survol */
+.submenu:hover {
+  background-color: transparent; /* Pas de fond sur le conteneur principal */
+}
+
+.submenu:hover > span,
+.submenu:hover > i {
+  color: rgb(116, 123, 255); /* Nouvelle couleur bleue */
+}
+
+/* Styles pour le contenu déroulant */
+.submenu-content {
+  display: none; /* Masqué par défaut */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0.25rem;
+  z-index: 10;
+  width: 200px; /* Largeur optionnelle */
+  margin-left: 0; /* Supprimer la marge à gauche */
+}
+
+/* Afficher le sous-menu au survol du conteneur parent */
+.submenu:hover .submenu-content {
+  display: block; /* Afficher le sous-menu au survol */
+}
+
+/* Styles pour les éléments individuels du sous-menu */
+.submenu-content li {
+  list-style: none;
+  padding: 0.5rem 1rem;
+  color: rgb(84, 107, 105); /* Couleur par défaut */
+  transition: background-color 0.3s, color 0.3s; /* Transition douce */
+  display: flex; /* Permet de cibler tout le conteneur */
+  align-items: center;
+  cursor: pointer; /* Curseur en doigt */
+  text-transform: uppercase; /* Mettre le texte en majuscule */
+  margin-left: 0; /* Supprimer la marge à gauche */
+}
+
+/* Appliquer un fond gris clair uniquement autour du texte au survol de chaque élément */
+.submenu-content li:hover {
+  background-color: #f3f4f6; /* Fond gris clair */
+  color: rgb(116, 123, 255); /* Texte devient la couleur bleue spécifiée */
+}
+
+/* Faire en sorte que tous les enfants de l'élément suivent la couleur */
+.submenu-content li:hover > a {
+  color: rgb(116, 123, 255); /* Texte des liens devient la couleur bleue spécifiée */
+}
+
+.search-results-container {
+  position: absolute;
+  top: 100%; /* Place les résultats juste sous l'input */
+  left: 0;
+  width: 100%; /* Prend la largeur du parent */
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  margin-top: 0.5rem; /* Espacement léger entre l'input et les résultats */
+  border-radius: 4px;
+  max-height: 300px; /* Limiter la hauteur pour éviter le débordement */
+  overflow-y: auto;
+}
+
+.search-results-container li {
+  list-style: none;
+  padding: 0.5rem 1rem;
+  color: rgb(84, 107, 105); /* Couleur par défaut */
+  cursor: pointer; /* Curseur en doigt */
+  text-transform: uppercase;
+  margin-left: 0; /* Supprimer la marge à gauche */
+  transition: background-color 0.3s, color 0.3s; /* Transition douce */
+}
+
+.search-results-container li:hover {
+  background-color: #f3f4f6; /* Fond gris clair au survol */
+  color: rgb(116, 123, 255); /* Texte devient bleu */
+}
+
+.search-results-container li:hover > a {
+  color: rgb(116, 123, 255); /* Texte des liens devient bleu au survol */
 }

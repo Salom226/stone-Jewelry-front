@@ -15,12 +15,16 @@
         <InputNumber id="price" v-model="product.price" mode="currency" currency="EUR" locale="fr-FR" required />
       </div>
       <div class="p-field">
-        <label for="image">Image URL</label>
-        <InputText id="image" v-model="product.image" />
+        <label for="image">Image</label>
+        <input type="file" id="image" @change="onFileChange" />
       </div>
       <div class="p-field">
         <label for="stock">Stock</label>
         <InputNumber id="stock" v-model="product.stock" :min="0" required />
+      </div>
+      <div class="p-field">
+        <label for="category">Catégorie</label>
+        <Select id="category" v-model="product.categoryId" :options="categories" optionLabel="name" optionValue="id" required />
       </div>
       <Button type="submit" label="Modifier le produit" icon="pi pi-check" class="p-mt-2" />
     </form>
@@ -48,7 +52,20 @@ const product = ref({
   price: null,
   image: "",
   stock: 0,
+  categoryId: null,
 });
+
+const categories = ref([]);
+
+const fetchCategories = async () => {
+  try {
+    const response = await new Api().get("/admin/categories");
+    categories.value = response.data;
+  } catch (error) {
+    showError("Erreur lors de la récupération des catégories.");
+    console.error(error);
+  }
+};
 
 const route = useRoute()
 
@@ -63,10 +80,24 @@ const fetchProductDetails = () => {
       console.error(error);
     });
 }
+const imageFile = ref(null);
 
+const onFileChange = (event) => {
+  imageFile.value = event.target.files[0]; 
+};
 const editProduct = async () => {
   try {
-    const response = await new Api().put("/admin/products/" + route.params.id, product.value);
+    let imageUrl = product.value.image;
+
+    if (imageFile.value) {
+      const formData = new FormData();
+      formData.append("image", imageFile.value);
+      const imageResponse = await new Api().post("/admin/products/upload", formData);
+      imageUrl = imageResponse.data.imageUrl;
+    }
+
+    const updatedProduct = { ...product.value, image: imageUrl };
+    await new Api().put(`/admin/products/${route.params.id}`, updatedProduct);
     showSuccess("Produit modifié avec succès");
     router.push({ name: "ProductAdmin" });
   } catch (error) {
@@ -91,8 +122,8 @@ const showError = (message) => {
     life: 3000,
   });
 };
-
 onMounted(() => {
+  fetchCategories();
   fetchProductDetails();
 });
 </script>

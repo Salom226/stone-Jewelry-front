@@ -64,7 +64,7 @@ export default {
       addToCart(productId);
     },
     getProductImageUrl(image) {
-      return `${import.meta.env.VITE_API_UPLOAD_URL}/images/${image}`;
+      return `${image}`;
     },
   },
 };

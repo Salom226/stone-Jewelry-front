@@ -10,13 +10,15 @@ import Login from "../views/Login.vue";
 import Order from "../views/Order.vue";
 import Payment from "../views/Payment.vue";
 import Cart from "../views/Cart.vue";
+import BijouxCategory from '../views/BijouxCategory.vue'; 
+
 
 import AdminHome from "../views/admin/AdminHome.vue";
 
 import CreateProductAdmin from "../views/admin/CreateProductAdmin.vue";
 import EditProductAdmin from "@/views/admin/EditProductAdmin.vue";
 import OrderValidation from "../views/OrderValidation.vue";
-// Routes d'administration groupées
+
 const adminRoutes = [
   {
     path: "",
@@ -111,6 +113,12 @@ const routes = [
     path: "/payment",
     name: "Payment",
     component: Payment,
+  },
+    {
+    path: '/bijoux/:id',
+    name: 'BijouxCategory',
+    component: BijouxCategory,
+    props: true,
   },
   {
     path: "/admin",

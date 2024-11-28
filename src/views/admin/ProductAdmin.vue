@@ -15,14 +15,14 @@
           <div v-for="(item, index) in slotProps.items" :key="index" class="product-item">
             <div class="product-container">
               <div class="product-image-container">
-                <img :src="getProductImageUrl(item.image)" :alt="item.name" class="product-image" />
-                <div class="product-tag">
+                <img v-if="item.image" :src="getProductImageUrl(item.image)" :alt="item.name" class="product-image" />
+                <!-- <div class="product-tag">
                   <Tag :value="item.inventoryStatus" :severity="getSeverity(item)"></Tag>
-                </div>
+                </div> -->
               </div>
               <div class="product-details">
                 <div>
-                  <span class="product-category">{{ item.category }}</span>
+                  <span class="product-category">{{ item.category.name }}</span>
                   <h3 class="product-name">{{ item.name }}</h3>
                 </div>
                 <div class="product-actions">
@@ -75,11 +75,17 @@ const sortKey = ref(null);
 
 let loading = ref(false);
 
+onMounted(() => {
+  fetchProducts();
+  console.log(products.value); 
+});
+
 const fetchProducts = async () => {
   loading.value = true;
   try {
     const response = await new Api().get("/products");
     loading.value = false;
+    console.log(response.data.products);
     products.value = response.data.products;
   } catch (error) {
     loading.value = false;
@@ -154,7 +160,7 @@ const onSortChange = (event) => {
 };
 
 const getProductImageUrl = (image) => {
-  return `${import.meta.env.VITE_API_UPLOAD_URL}/images/${image}`;
+  return `${image}`;
 }
 
 onMounted(() => {

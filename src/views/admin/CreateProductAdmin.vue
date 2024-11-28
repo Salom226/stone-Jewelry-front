@@ -22,12 +22,16 @@
         />
       </div>
       <div class="p-field">
-        <label for="image">Image URL</label>
-        <InputText id="image" v-model="product.image" />
+        <label for="image">Image</label>
+        <input type="file" id="image" @change="onFileChange" />
       </div>
       <div class="p-field">
         <label for="stock">Stock</label>
         <InputNumber id="stock" v-model="product.stock" :min="0" required />
+      </div>
+      <div class="p-field">
+        <label for="category">Catégorie</label>
+        <Select id="category" v-model="product.categoryId" :options="categories" optionLabel="name" optionValue="id" required />
       </div>
       <Button
         type="submit"
@@ -42,7 +46,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
@@ -63,9 +67,39 @@ const product = ref({
   image: "",
   stock: 0,
 });
+const categories = ref([]);
+
+const fetchCategories = async () => {
+  try {
+    const response = await new Api().get("/admin/categories");
+    categories.value = response.data;
+  } catch (error) {
+    showError("Erreur lors de la récupération des catégories.");
+    console.error(error);
+  }
+};
+const imageFile = ref(null);
+
+const onFileChange = (event) => {
+  imageFile.value = event.target.files[0]; 
+};
 
 const createProduct = async () => {
   try {
+    if (!imageFile.value) {
+      showError("Veuillez sélectionner une image");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", imageFile.value);
+
+    const imageResponse = await new Api().post("/admin/products/upload", formData);
+    const imageUrl = imageResponse.data.imageUrl;
+    console.log('Image URL:', imageUrl);
+
+
+    product.value.image = imageUrl;
     const response = await new Api().post("/admin/products", product.value);
     showSuccess("Produit créé avec succès");
     router.push({ name: "ProductAdmin" });
@@ -73,6 +107,10 @@ const createProduct = async () => {
     showError("Une erreur est survenue lors de la création du produit");
   }
 };
+
+onMounted(() => {
+  fetchCategories();
+});
 
 const showSuccess = (message) => {
   toast.add({

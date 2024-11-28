@@ -4,7 +4,7 @@
     <div v-if="items && items.length">
       <div v-for="item in items" :key="item.id" class="cart-item">
         <img :src="getProductImageUrl(item.image)" alt="Image du produit" class="product-image" />
-        <h5>{{ item.name }}</h5>
+        <h2>{{ item.name }}</h2>
         <p>Quantité : {{ item.quantity }}</p>
         <p>Prix unitaire : {{ item.price }} EUR</p>
         <p>Total pour ce produit : {{ item.price * item.quantity }} EUR</p>
@@ -102,7 +102,7 @@ export default {
     },
 
     getProductImageUrl(image) {
-      return `${import.meta.env.VITE_API_UPLOAD_URL}/images/${image}`;
+      return `${image}`;
     },
   },
 };

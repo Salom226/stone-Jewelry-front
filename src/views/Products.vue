@@ -1,25 +1,30 @@
 <template>
-  <div>
-    <!-- <h1>Produits</h1> -->
-    <div class="products-container">
-      <div v-for="product in products" :key="product.id" class="product-card">
-        <router-link :to="`/product/${product.id}`">
-          <img :src="getProductImageUrl(product.image)" alt="Image du produit" class="product-image" />
-        </router-link>
-        <div class="product-info">
-          <h5 class="product-name">{{ product.name }}</h5>
-          <p class="product-description">{{ product.description.substring(0, 60) }}...</p>
-          <h3 class="product-price">{{ product.price }} EUR</h3>
-          <button class="add-to-cart" @click="addToCart(product.id)">Ajouter au panier</button>
+  <main>
+    <div>
+      <h1>Produits</h1>
+      <div class="products-container">
+        <div v-for="product in products" :key="product.id" class="product-card">
+          <router-link :to="`/product/${product.id}`">
+            <img :src="getProductImageUrl(product.image)" alt="Image du produit" class="product-image" />
+          </router-link>
+          <div class="product-info">
+            <h2 class="product-name">{{ product.name }}</h2>
+            <p class="product-description">{{ product.description.substring(0, 60) }}...</p>
+            <h3 class="product-price">{{ product.price }} EUR</h3>
+            <button class="add-to-cart" @click="addToCart(product.id)">Ajouter au panier</button>
+          </div>
         </div>
       </div>
+      <div class="pagination">
+        <button :disabled="pagination.current_page === 1" @click="prevPage">Précédent</button>
+        <span>Page {{ pagination.current_page }} sur {{ pagination.total_pages }}</span>
+        <button :disabled="pagination.current_page === pagination.total_pages" @click="nextPage">Suivant</button>
+      </div>
     </div>
-    <div class="pagination">
-      <button :disabled="pagination.current_page === 1" @click="prevPage">Précédent</button>
-      <span>Page {{ pagination.current_page }} sur {{ pagination.total_pages }}</span>
-      <button :disabled="pagination.current_page === pagination.total_pages" @click="nextPage">Suivant</button>
-    </div>
-  </div>
+  </main>
+  <footer>
+    
+  </footer>
 </template>
 
   
@@ -76,7 +81,7 @@ export default {
       }
     },
     getProductImageUrl(image) {
-      return `${import.meta.env.VITE_API_UPLOAD_URL}/images/${image}`;
+      return `${image}`;
     }
   }
 };

@@ -12,6 +12,18 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+@font-face {
+  font-family: "megrim";
+  src: url("@/assets/fonts/Megrim/Megrim-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "ITC";
+  src: url("@/assets/fonts/StoneSansStd-Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: "bodoni";
+  src: url("@/assets/fonts/itc-bodoni-twelve-book.ttf") format("truetype");
+}
 
 html,
 body,
@@ -38,15 +50,15 @@ body {
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 3.2rem;
   line-height: 1.1;
 }
 
 button {
   border-radius: 8px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
@@ -62,7 +74,7 @@ button:focus-visible {
 }
 
 .card {
-  padding: 2em;
+  padding: 2rem;
 }
 
 @media (prefers-color-scheme: light) {

@@ -6,7 +6,7 @@ import router from "./router/router";
 import ToastService from "primevue/toastservice";
 import ConfirmationService from "primevue/confirmationservice";
 import "primeicons/primeicons.css";
-import "./style.css";
+import "./style.scss";
 import mitt from "mitt";
 import Toast from "primevue/toast";
 
