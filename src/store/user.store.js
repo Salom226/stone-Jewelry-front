@@ -1,30 +1,45 @@
-let user = {};
+import { reactive } from "vue";
 
-function init() {
-  if (!loadUserFromLocalStorage()) {
-    setUser({});
+function useUserStore() {
+  const state = reactive({
+    user: {}
+  });
+
+  function init() {
+    if (!loadUserFromLocalStorage()) {
+      // Ne pas réinitialiser l'utilisateur si déjà initialisé
+      if (Object.keys(state.user).length === 0) {
+        setUser({});
+      }
+    }
   }
-}
 
 function getUser() {
-  return user;
+  return state.user;
 }
 
 function setUser(newUser, { saveToLocalStorage = true } = {}) {
-  user = newUser;
+  state.user = newUser;
   if (saveToLocalStorage) {
-    saveUserToLocalStorage(user);
+    saveUserToLocalStorage(state.user);
   }
 }
 
-function getUserRoles() {
-  return user?.roles;
+function userHasRole(role) {
+  return Array.isArray(state.user.roles) && state.user.roles.includes(role);
 }
 
+// Vérifier si l'utilisateur est authentifié en fonction du token
+function isAuthenticated() {
+  return state.user?.token && !isTokenExpired(state.user.token);  // Vérifier si le token est valide et non expiré
+}
+
+// Sauvegarder l'utilisateur dans le localStorage
 function saveUserToLocalStorage(user) {
   localStorage.setItem("user", JSON.stringify(user));
 }
 
+// Charger l'utilisateur depuis le localStorage
 function loadUserFromLocalStorage() {
   const user = localStorage.getItem("user");
   if (user) {
@@ -34,22 +49,19 @@ function loadUserFromLocalStorage() {
   return false;
 }
 
-function userHasRole(role) {
-  if (Array.isArray(user.roles)) {
-    return user.roles.includes(role);
-  }
-  return false;
-}
 
-export function useUserStore() {
+
   return {
-    user,
+    user: state.user,
     getUser,
     setUser,
     saveUserToLocalStorage,
     loadUserFromLocalStorage,
     init,
-    getUserRoles,
     userHasRole,
+    isAuthenticated,
   };
 }
+
+export { useUserStore };
+

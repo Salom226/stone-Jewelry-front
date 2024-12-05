@@ -4,6 +4,7 @@ import { useUserStore } from "@/store/user.store";
 
 const userStore = useUserStore();
 userStore.init();
+
 </script>
 
 <template>

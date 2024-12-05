@@ -1,17 +1,24 @@
 <template>
-  <main>
+  <main class="main">
     <div>
       <h1>Produits</h1>
       <div class="products-container">
         <div v-for="product in products" :key="product.id" class="product-card">
-          <router-link :to="`/product/${product.id}`">
-            <img :src="getProductImageUrl(product.image)" alt="Image du produit" class="product-image" />
-          </router-link>
+          <div class="image-container">
+            <router-link :to="`/product/${product.id}`">
+              <img 
+                :src="getProductImageUrl(product.images?.[0])" 
+                alt="images du produit" 
+                class="product-image"
+              />
+            </router-link>
+            <div class="add-to-cart">
+              <button @click.stop="addToCart(product.id)">Ajouter au panier</button>
+            </div>
+          </div>
           <div class="product-info">
-            <h2 class="product-name">{{ product.name }}</h2>
-            <p class="product-description">{{ product.description.substring(0, 60) }}...</p>
-            <h3 class="product-price">{{ product.price }} EUR</h3>
-            <button class="add-to-cart" @click="addToCart(product.id)">Ajouter au panier</button>
+            <h2 class="product-name product-name-home">{{ product.name }}</h2>
+            <h3 class="product-price">{{ product.price.toFixed(2) }} €</h3>
           </div>
         </div>
       </div>
@@ -61,13 +68,6 @@ export default {
         });
     },
     addToCart(productId) {
-      // axios.get(`http://localhost:8000/cart/add/${productId}`)
-      //   .then(response => {
-      //     console.log(response.data); 
-      //   })
-      //   .catch(error => {
-      //     console.error(error);
-      //   });
       addToCart(productId);
     },
     nextPage() {
@@ -80,9 +80,9 @@ export default {
         this.fetchProducts(this.pagination.current_page - 1);
       }
     },
-    getProductImageUrl(image) {
-      return `${image}`;
-    }
+    getProductImageUrl(imageUrl) {
+      return imageUrl || "https://via.placeholder.com/150"; // Image par défaut
+    },
   }
 };
 </script>

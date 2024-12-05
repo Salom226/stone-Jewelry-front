@@ -15,8 +15,18 @@
         <InputNumber id="price" v-model="product.price" mode="currency" currency="EUR" locale="fr-FR" required />
       </div>
       <div class="p-field">
-        <label for="image">Image</label>
-        <input type="file" id="image" @change="onFileChange" />
+        <label for="images">Images</label>
+
+        <div v-if="product.images.length > 0">
+          <p>Images actuelles :</p>
+          <div class="image-preview-container" v-for="(image, index) in product.images" :key="index">
+            <img :src="image" alt="Aperçu" class="image-preview" />
+            <Button icon="pi pi-times" class="p-button-rounded p-button-danger" @click="removeExistingImage(index)" />
+          </div>
+        </div>
+
+        <!-- Upload de nouvelles images -->
+        <input type="file" id="images" multiple @change="onFilesChange" />
       </div>
       <div class="p-field">
         <label for="stock">Stock</label>
@@ -50,12 +60,13 @@ const product = ref({
   name: "",
   description: "",
   price: null,
-  image: "",
+  images: [],
   stock: 0,
   categoryId: null,
 });
 
 const categories = ref([]);
+const imageFiles = ref([]);
 
 const fetchCategories = async () => {
   try {
@@ -74,34 +85,44 @@ const fetchProductDetails = () => {
   new Api().get(`/products/${productId}`)
     .then(response => {
       product.value = response.data.product;
-
+      console.log("Valeur de product.image :", product.value.image);
     })
     .catch(error => {
       console.error(error);
     });
-}
-const imageFile = ref(null);
+};
 
-const onFileChange = (event) => {
-  imageFile.value = event.target.files[0]; 
+const onFilesChange = (event) => {
+  imageFiles.value = Array.from(event.target.files);
+};
+// Supprimer une image existante
+const removeExistingImage = (index) => {
+  product.value.images.splice(index, 1);
 };
 const editProduct = async () => {
   try {
-    let imageUrl = product.value.image;
+    let newImageUrls = [];
 
-    if (imageFile.value) {
+    if (imageFiles.value.length > 0)  {
       const formData = new FormData();
-      formData.append("image", imageFile.value);
-      const imageResponse = await new Api().post("/admin/products/upload", formData);
-      imageUrl = imageResponse.data.imageUrl;
+      formData.append("image", imageFiles.value);
+      imageFiles.value.forEach((file) => {
+        formData.append("images[]", file);
+      });
+      const uploadResponse = await new Api().post("/admin/products/upload-multiple", formData);
+      newImageUrls = uploadResponse.data.imageUrls;
     }
 
-    const updatedProduct = { ...product.value, image: imageUrl };
+    const updatedProduct = {
+      ...product.value,
+      images: [...product.value.images, ...newImageUrls], // Combiner les anciennes et nouvelles images
+    };
     await new Api().put(`/admin/products/${route.params.id}`, updatedProduct);
     showSuccess("Produit modifié avec succès");
     router.push({ name: "ProductAdmin" });
   } catch (error) {
-    showError("Une erreur est survenue lors de la modification du produit");
+    showError("Une erreur est survenue lors de la modification du produit.");
+    console.error(error);
   }
 };
 
@@ -122,9 +143,15 @@ const showError = (message) => {
     life: 3000,
   });
 };
-onMounted(() => {
-  fetchCategories();
-  fetchProductDetails();
+const isLoading = ref(true);
+onMounted(async () => {
+  try {
+    await Promise.all([fetchCategories(), fetchProductDetails()]);
+  } catch (error) {
+    showError("Erreur lors du chargement des données.");
+  } finally {
+    isLoading.value = false;
+  }
 });
 </script>
 
@@ -154,5 +181,22 @@ label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: bold;
+}
+.image-preview-container {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.image-preview {
+  width: 100px; 
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.p-button-rounded {
+  margin-top: 5px;
 }
 </style>

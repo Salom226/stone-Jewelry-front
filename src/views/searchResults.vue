@@ -3,7 +3,6 @@
       <h2>Résultats de la recherche</h2>
       <ul>
         <li v-for="product in searchResults" :key="product.id">
-          <img :src="product.image" alt="Product image" />
           <p>{{ product.name }}</p>
           <p>{{ product.price }} €</p>
         </li>
@@ -29,7 +28,8 @@
       searchProducts() {
         new Api().get(`products/search?q=${this.searchQuery}`)
           .then((response) => {
-            this.searchResults = response.data;
+            console.log("Données produits reçues:", response.data);
+      this.searchResults = response.data;
           })
           .catch((error) => {
             console.error('Erreur de recherche', error);

@@ -56,8 +56,10 @@
     </template>
 
     <template #end>
-      <div class="navbar-end flex items-center space-x-4 relative">
-         <span class="pi pi-search ml-auto" style="cursor: pointer;" @click="handleSearch"></span>
+      <div 
+        class="navbar-end flex items-center space-x-4 relative"
+        ref="searchContainer" >
+        <span class="pi pi-search ml-auto" style="cursor: pointer;" @click="handleSearch"></span>
         
         <input 
           v-model="searchQuery" 
@@ -66,19 +68,31 @@
           placeholder="Rechercher..." 
           class="p-inputtext p-component p-inputtext-sm" 
         />
-
-          <!-- Affichage des résultats de recherche sous l'input -->
-          <ul v-if="searchResults.length > 0" class="search-results-container absolute bg-white shadow-lg rounded-md w-full mt-2">
-            <li
-              v-for="result in searchResults"
-              :key="result.id"
-              class="py-2 px-4 hover:bg-gray-200"
-            >
-              <router-link :to="{ name: 'ProductDetail', params: { id: result.id } }">
-                {{ result.name }}
-              </router-link>
-            </li>
-          </ul>
+        <ul
+        v-if="searchResults.length > 0"
+        class="search-results-container absolute bg-white shadow-lg rounded-md w-full mt-2"
+      >
+        <li
+          v-for="result in searchResults"
+          :key="result.id"
+          class="flex items-center py-2 px-4 hover:bg-gray-200 space-x-4"
+        >
+          <router-link
+            :to="{ name: 'ProductDetail', params: { id: result.id } }"
+            class="flex items-center space-x-4"
+          >
+            <img
+              :src="result.images[0]"
+              alt="Image du produit"
+              class="w-12 h-12 object-cover rounded-md"
+            />
+            <div class="flex-1">
+              <p class="block font-semibold text-gray-800">{{ result.name }}</p>
+              <p class="text-gray-500 text-sm">{{ result.price.toFixed(2) }} €</p>
+            </div>
+          </router-link>
+        </li>
+      </ul>
         <router-link v-if="!isLoggedIn" to="/login" class="mr-2">CONNEXION</router-link>
         <router-link v-if="!isLoggedIn" to="/register" class="ml-2">INSCRIPTION</router-link>
         <router-link v-if="isAdmin" to="/admin" class="ml-2">ADMIN</router-link>
@@ -100,7 +114,8 @@ export default {
     return {
       searchQuery: '',
       searchResults: [],
-      isLoggedIn: false, 
+      isLoggedIn: false,
+      isAdmin: false,
       items: [
         { label: "ACCEUIL", to: "/", icon: "pi pi-home" },
         { label: "PANIER", to: "/cart", icon: "pi pi-shopping-cart" },
@@ -115,9 +130,17 @@ export default {
   mounted() {
     this.fetchCategories();
     this.checkLoginStatus();
+    document.addEventListener("click", this.handleClickOutside);
     this.emitter.on('login', () => {
       this.checkLoginStatus();
     });
+  },
+  beforeUnmount() {
+    document.removeEventListener("click", this.handleClickOutside);
+    
+    if (this.emitter) {
+      this.emitter.off("login", this.checkLoginStatus);
+    }
   },
   methods: {
     checkLoginStatus() {
@@ -130,21 +153,19 @@ export default {
       if (this.searchQuery.length > 2) {
         this.searchProducts();
       } else {
-        // Si le champ est vide ou trop court, on vide les résultats
         this.searchResults = [];
       }
     },
 
     searchProducts() {
-      // Effectuer la recherche en fonction du query
-      new Api().get(`/products/search?q=${this.searchQuery}`)
+      new Api()
+        .get(`/products/search?q=${this.searchQuery}`)
         .then((response) => {
-          console.log("Résultats de recherche", response.data);
-          this.searchResults = response.data; // Stocke les résultats dans l'état
+          this.searchResults = response.data; 
         })
         .catch((error) => {
           console.error('Erreur de recherche', error);
-          this.searchResults = []; // Vide les résultats en cas d'erreur
+          this.searchResults = []; 
         });
     },
 
@@ -181,6 +202,12 @@ export default {
       userStore.setUser({}, { saveToLocalStorage: true }); 
       this.isLoggedIn = false; 
       this.$router.push("/login");
+    },
+    handleClickOutside(event) {
+      const searchContainer = this.$refs.searchContainer;
+      if (searchContainer && !searchContainer.contains(event.target)) {
+        this.searchResults = [];
+      }
     },
   },
 };

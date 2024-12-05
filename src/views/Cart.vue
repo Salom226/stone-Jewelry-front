@@ -3,7 +3,11 @@
     <h1>Mon Panier</h1>
     <div v-if="items && items.length">
       <div v-for="item in items" :key="item.id" class="cart-item">
-        <img :src="getProductImageUrl(item.image)" alt="Image du produit" class="product-image" />
+        <img 
+        :src="getProductImageUrl(item.images?.[0])" 
+        alt="images du produit" 
+        class="product-image"
+        />
         <h2>{{ item.name }}</h2>
         <p>Quantité : {{ item.quantity }}</p>
         <p>Prix unitaire : {{ item.price }} EUR</p>
@@ -77,7 +81,7 @@ export default {
         this.items = products.map((product) => ({
           id: product.id,
           name: product.name,
-          image: product.image,
+          images: product.images,
           quantity: cart[product.id],
           price: product.price,
         }));
@@ -100,9 +104,8 @@ export default {
 
       this.$router.push("/orders/validation");
     },
-
-    getProductImageUrl(image) {
-      return `${image}`;
+    getProductImageUrl(imageUrl) {
+      return imageUrl || "https://via.placeholder.com/150"; // Image par défaut
     },
   },
 };

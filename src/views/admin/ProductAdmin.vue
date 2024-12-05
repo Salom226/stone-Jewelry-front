@@ -14,12 +14,12 @@
         <div class="product-list">
           <div v-for="(item, index) in slotProps.items" :key="index" class="product-item">
             <div class="product-container">
-              <div class="product-image-container">
-                <img v-if="item.image" :src="getProductImageUrl(item.image)" :alt="item.name" class="product-image" />
-                <!-- <div class="product-tag">
+              <img v-if="item.images?.length > 0" 
+              :src="getProductImageUrl(item.images[0])" 
+              alt="Product Image" 
+              class="product-image" />                <!-- <div class="product-tag">
                   <Tag :value="item.inventoryStatus" :severity="getSeverity(item)"></Tag>
                 </div> -->
-              </div>
               <div class="product-details">
                 <div>
                   <span class="product-category">{{ item.category.name }}</span>
@@ -159,9 +159,12 @@ const onSortChange = (event) => {
   sortField.value = value.replace("!", "");
 };
 
-const getProductImageUrl = (image) => {
-  return `${image}`;
-}
+const getProductImageUrl = (imageUrl) => {
+  if (!imageUrl || imageUrl === undefined) {
+    return "https://via.placeholder.com/150"; // Image par défaut si imageUrl est undefined ou vide
+  }
+  return imageUrl;
+};
 
 onMounted(() => {
   fetchProducts();
@@ -170,16 +173,16 @@ onMounted(() => {
 
 <style scoped>
 .products-admin {
-  padding: 20px;
+  padding: 1.25rem;
 }
 
 h1 {
   color: var(--text-color);
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 }
 
 .p-button {
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 }
 
 .loading-container {
@@ -202,7 +205,7 @@ h1 {
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 0.0625rem solid #e2e8f0;
 }
 
 .product-image-container {
@@ -211,17 +214,17 @@ h1 {
 }
 
 .product-image {
-  width: 100%;
-  height: auto;
-  border-radius: 0.375rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  height: 15.6rem;
+  object-fit: cover;
+  border-radius: 0.4rem;
+  box-shadow: 0 0.25rem 0.375rem -0.06rem rgba(0, 0, 0, 0.1),
+    0 0.125rem 0.25rem -0.06rem rgba(0, 0, 0, 0.06);
 }
 
 .product-tag {
   position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
+  top: 0.3rem;
+  left: 0.3rem;
 }
 
 .product-details {
@@ -231,14 +234,14 @@ h1 {
 }
 
 .product-category {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: #718096;
 }
 
 .product-name {
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 600;
-  margin-top: 0.5rem;
+  margin-top: 0.3rem;
   margin-bottom: 1rem;
 }
 
@@ -259,7 +262,7 @@ h1 {
   gap: 0.5rem;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 40rem) {
   .product-container {
     flex-direction: row;
   }

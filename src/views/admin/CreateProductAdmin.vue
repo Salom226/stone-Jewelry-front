@@ -22,8 +22,8 @@
         />
       </div>
       <div class="p-field">
-        <label for="image">Image</label>
-        <input type="file" id="image" @change="onFileChange" />
+        <label for="images">Images</label>
+        <input type="file" id="images" multiple @change="onFilesChange" />
       </div>
       <div class="p-field">
         <label for="stock">Stock</label>
@@ -64,7 +64,7 @@ const product = ref({
   name: "",
   description: "",
   price: null,
-  image: "",
+  images: [],
   stock: 0,
 });
 const categories = ref([]);
@@ -78,33 +78,48 @@ const fetchCategories = async () => {
     console.error(error);
   }
 };
-const imageFile = ref(null);
+const imageFiles = ref([]);
 
-const onFileChange = (event) => {
-  imageFile.value = event.target.files[0]; 
+const onFilesChange = (event) => {
+  imageFiles.value = Array.from(event.target.files); // Stocker plusieurs fichiers
 };
 
 const createProduct = async () => {
   try {
-    if (!imageFile.value) {
-      showError("Veuillez sélectionner une image");
+    if (imageFiles.value.length === 0) {
+      showError("Veuillez sélectionner au moins une image");
       return;
     }
 
     const formData = new FormData();
-    formData.append("image", imageFile.value);
+    imageFiles.value.forEach((file) => {
+      formData.append("images[]", file); // Ajouter plusieurs fichiers
+    });
 
-    const imageResponse = await new Api().post("/admin/products/upload", formData);
-    const imageUrl = imageResponse.data.imageUrl;
-    console.log('Image URL:', imageUrl);
+    const imageResponse = await new Api().post("/admin/products/upload-multiple", formData);
+    const imageUrls = imageResponse.data.imageUrls;
 
+    const payload = {
+      name: product.value.name,
+      description: product.value.description,
+      price: product.value.price,
+      images: imageUrls,// URLs des images
+      stock: product.value.stock,
+      categoryId: product.value.categoryId,
+    };
 
-    product.value.image = imageUrl;
-    const response = await new Api().post("/admin/products", product.value);
+    // Log des données préparées
+    console.log("Payload envoyé :", payload);
+
+    // Envoi à l'API
+    await new Api().post("/admin/products", payload);
+    product.value.images = imageUrls; // Associer les URLs des images au produit
+
     showSuccess("Produit créé avec succès");
     router.push({ name: "ProductAdmin" });
   } catch (error) {
     showError("Une erreur est survenue lors de la création du produit");
+    console.error(error);
   }
 };
 

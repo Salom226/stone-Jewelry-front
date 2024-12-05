@@ -1,11 +1,20 @@
 <template>
     <div class="category-page">
         <h1 class="category-title">{{ categoryName }}</h1>
-        <div class="product-container">
+        <div class="products-container">
           <div v-for="product in products" :key="product.id" class="product-card">
-            <img v-bind:src="product.image" alt="product.name" class="product-image" />
-            <p class="product-name">{{ product.name }}</p>
-            <p class="product-price">{{ product.price }} €</p>
+            <div class="image-container">
+              <router-link :to="`/product/${product.id}`">
+                <img v-bind:src="product.image" alt="product.name" class="product-image" />
+              </router-link>
+              <div class="add-to-cart">
+                <button @click.stop="addToCart(product.id)">Ajouter au panier</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h2 class="product-name">{{ product.name }}</h2>
+              <h3 class="product-price">{{ product.price }} €</h3>
+            </div>
           </div>
         </div>
         <p v-if="!products.length">Aucun produit dans cette catégorie.</p>
@@ -15,6 +24,8 @@
   <script>
   import axios from 'axios';
   import { Api } from '@/helper/api';
+  import { addToCart } from '../store/cart.store';
+
   
   export default {
     props: ['id'],
@@ -38,6 +49,11 @@
     },
   },
     methods: {
+
+      addToCart(productId) {
+      addToCart(productId);
+    },
+
       async fetchCategoryProducts() {
         try {
             if (!this.id) {
