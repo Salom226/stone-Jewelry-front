@@ -95,7 +95,7 @@
       </ul>
         <router-link v-if="!isLoggedIn" to="/login" class="mr-2">CONNEXION</router-link>
         <router-link v-if="!isLoggedIn" to="/register" class="ml-2">INSCRIPTION</router-link>
-        <router-link v-if="isAdmin" to="/admin" class="ml-2">ADMIN</router-link>
+        <router-link  v-if="isLoggedIn && isAdmin"  to="/admin" class="ml-2">ADMIN</router-link>
         <a v-if="isLoggedIn" href="#" @click="logout">DECONNEXION</a>
       </div>
     </template>

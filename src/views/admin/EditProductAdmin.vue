@@ -51,6 +51,7 @@ import Button from "primevue/button";
 import Toast from "primevue/toast";
 import { Api } from "@/helper/api";
 import { useRoute, useRouter } from "vue-router";
+import { watch } from "vue";
 
 const router = useRouter();
 
@@ -71,6 +72,7 @@ const imageFiles = ref([]);
 const fetchCategories = async () => {
   try {
     const response = await new Api().get("/admin/categories");
+    console.log("Catégories récupérées :", response.data);
     categories.value = response.data;
   } catch (error) {
     showError("Erreur lors de la récupération des catégories.");
@@ -80,17 +82,26 @@ const fetchCategories = async () => {
 
 const route = useRoute()
 
-const fetchProductDetails = () => {
+const fetchProductDetails = async () => {
   const productId = Number(route.params.id);
-  new Api().get(`/products/${productId}`)
-    .then(response => {
-      product.value = response.data.product;
-      console.log("Valeur de product.image :", product.value.image);
-    })
-    .catch(error => {
-      console.error(error);
-    });
+  try {
+    const response = await new Api().get(`/products/${productId}`);
+    console.log("Détails du produit récupérés :", response.data);
+
+    const fetchedProduct = response.data.product;
+
+    product.value = {
+  ...fetchedProduct,
+  categoryId: fetchedProduct.category ? fetchedProduct.category.id : null,
 };
+
+    console.log("Produit après traitement :", product.value);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des détails du produit :", error);
+    showError("Erreur lors de la récupération des détails du produit.");
+  }
+};
+
 
 const onFilesChange = (event) => {
   imageFiles.value = Array.from(event.target.files);
@@ -143,10 +154,13 @@ const showError = (message) => {
     life: 3000,
   });
 };
+
 const isLoading = ref(true);
 onMounted(async () => {
   try {
     await Promise.all([fetchCategories(), fetchProductDetails()]);
+    console.log("Produit final :", product.value);
+    console.log("Catégories finales :", categories.value);
   } catch (error) {
     showError("Erreur lors du chargement des données.");
   } finally {
