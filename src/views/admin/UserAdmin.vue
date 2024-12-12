@@ -1,5 +1,5 @@
 <template>
-  <div class="user-admin">
+  <main class="user-admin">
     <h1>Gestion des utilisateurs</h1>
     <Button label="Ajouter un utilisateur" icon="pi pi-plus" @click="openAddUserDialog" />
     <DataTable :value="users" :paginator="true" :rows="10" dataKey="id" :rowHover="true"
@@ -27,7 +27,7 @@
 
     <Toast />
     <ConfirmDialog></ConfirmDialog>
-  </div>
+  </main>
 </template>
 
 <script setup>

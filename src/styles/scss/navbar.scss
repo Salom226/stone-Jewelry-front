@@ -1,3 +1,11 @@
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 3;
+}
+
 .custom-submenu {
   position: relative;
   display: flex;
@@ -161,30 +169,30 @@
   border-radius: 4px;
   max-height: 300px; 
   padding-left: 0;
-}
-
-.search-results-container {
   display: flex;
+  flex-direction: column;
   list-style: none;
   padding: 0.5rem 1rem;
   color: rgb(84, 107, 105);
   cursor: pointer; 
   align-items: center;
-  padding: 0.5rem 1rem;
   gap: 1rem;
   text-transform: uppercase;
   margin-left: 0; 
   transition: background-color 0.3s, color 0.3s; 
+
+  li{
+    width: 100%;
+  }
+  img {
+    width: 4.5rem; 
+    height: 4.5rem;
+    object-fit: cover;
+    border-radius: 0.25rem;
+  }
 }
 
-.search-results-container img {
-  width: 4.5rem; 
-  height: 4.5rem;
-  object-fit: cover;
-  border-radius: 0.25rem;
-}
-
-.search-results-container:hover {
+.search-results-container li:hover{
   background-color: #f3f4f6;
 }
 

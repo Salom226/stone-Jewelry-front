@@ -1,5 +1,5 @@
 <template>
-  <div class="categories-admin">
+  <main class="categories-admin">
     <h1>Gestion des catégories</h1>
     <Button
       label="Ajouter une catégorie"
@@ -64,7 +64,7 @@
 
     <Toast />
     <ConfirmDialog></ConfirmDialog>
-  </div>
+  </main>
 </template>
 
 <script setup>
@@ -185,10 +185,11 @@ const onRowEditSave = async (category) => {
     const response = await new Api().put(`/admin/categories/${category.id}`, category);
     console.log(response);
 
-    const index = categories.value.findIndex(
-      (category) => category.id === category.id
-    );
-    categories.value[index] = response.data;
+    const index = categories.value.findIndex((cat) => cat.id === category.id);
+
+    if (index !== -1) {
+      categories.value[index] = response.data; // Remplacer la catégorie existante
+    }
     showSuccess("La catégorie a été mise à jour avec succès");
   } catch (error) {
     console.error(error);

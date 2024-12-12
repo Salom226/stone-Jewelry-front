@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "../store/user.store";
 
-// Importations asynchrones
-// Start of Selection
 import Products from "../views/Products.vue";
 import ProductDetail from "../views/ProductDetail.vue";
 import Register from "../views/Register.vue";

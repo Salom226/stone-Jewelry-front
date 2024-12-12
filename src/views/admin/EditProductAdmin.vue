@@ -1,5 +1,5 @@
 <template>
-  <div class="create-product-admin">
+  <main class="create-product-admin">
     <h1>Modifier produit</h1>
     <form @submit.prevent="editProduct" class="p-fluid">
       <div class="p-field">
@@ -16,17 +16,23 @@
       </div>
       <div class="p-field">
         <label for="images">Images</label>
-
-        <div v-if="product.images.length > 0">
-          <p>Images actuelles :</p>
-          <div class="image-preview-container" v-for="(image, index) in product.images" :key="index">
-            <img :src="image" alt="Aperçu" class="image-preview" />
-            <Button icon="pi pi-times" class="p-button-rounded p-button-danger" @click="removeExistingImage(index)" />
+        <input type="file" id="images" multiple @change="onFilesChange" />
+        <div v-if="imagePreviews.length > 0">
+          <p>Aperçu des images :</p>
+          <div
+            class="image-preview-container"
+            v-for="(image, index) in imagePreviews"
+            :key="index"
+            :class="{ active: activeImageIndex === index }"
+          >
+            <img :src="image.src" alt="Aperçu" class="image-preview" @click="selectImage(index)" />
+            <Button
+              icon="pi pi-times"
+              class="p-button-rounded p-button-danger"
+              @click="removeImagePreview(index)"
+            />
           </div>
         </div>
-
-        <!-- Upload de nouvelles images -->
-        <input type="file" id="images" multiple @change="onFilesChange" />
       </div>
       <div class="p-field">
         <label for="stock">Stock</label>
@@ -38,7 +44,7 @@
       </div>
       <Button type="submit" label="Modifier le produit" icon="pi pi-check" class="p-mt-2" />
     </form>
-  </div>
+  </main>
 </template>
 
 <script setup>
@@ -68,11 +74,14 @@ const product = ref({
 
 const categories = ref([]);
 const imageFiles = ref([]);
+const imagePreviews = ref([]);
+const activeImageIndex = ref(null);
+const isLoading = ref(true);
+
 
 const fetchCategories = async () => {
   try {
     const response = await new Api().get("/admin/categories");
-    console.log("Catégories récupérées :", response.data);
     categories.value = response.data;
   } catch (error) {
     showError("Erreur lors de la récupération des catégories.");
@@ -80,43 +89,86 @@ const fetchCategories = async () => {
   }
 };
 
-const route = useRoute()
-
 const fetchProductDetails = async () => {
   const productId = Number(route.params.id);
   try {
     const response = await new Api().get(`/products/${productId}`);
-    console.log("Détails du produit récupérés :", response.data);
-
     const fetchedProduct = response.data.product;
 
     product.value = {
   ...fetchedProduct,
   categoryId: fetchedProduct.category ? fetchedProduct.category.id : null,
 };
-
-    console.log("Produit après traitement :", product.value);
+imagePreviews.value = fetchedProduct.images.map((url) => ({ type: "existing", src: url }));
+imageFiles.value.forEach((file) => {
+  imagePreviews.value.push({ type: "new", src: URL.createObjectURL(file) });
+});
   } catch (error) {
     console.error("Erreur lors de la récupération des détails du produit :", error);
     showError("Erreur lors de la récupération des détails du produit.");
   }
 };
 
-
+const route = useRoute()
 const onFilesChange = (event) => {
-  imageFiles.value = Array.from(event.target.files);
+  const files = Array.from(event.target.files);
+  imageFiles.value.push(...files);
+
+  const newPreviews = files.map((file) => URL.createObjectURL(file));
+  newPreviews.forEach((preview) => {
+    imagePreviews.value.push({ type: "new", src: preview });
+  });
 };
-// Supprimer une image existante
-const removeExistingImage = (index) => {
-  product.value.images.splice(index, 1);
+const removeImagePreview = (index) => {
+  const image = imagePreviews.value[index];
+
+  if(!image) {
+    imagePreviews.value.splice(index, 1);
+    return;
+  }
+
+  if (image.type === "existing") {
+    product.value.images.splice(index, 1); 
+  } else if (image.type === "new") {
+    const newIndex = index - product.value.images.length;
+    URL.revokeObjectURL(image.src);
+    imageFiles.value.splice(newIndex, 1);
+  }
+
+  imagePreviews.value.splice(index, 1);
+
+  if (activeImageIndex.value === index) {
+    activeImageIndex.value = null;
+  } else if (activeImageIndex.value > index) {
+    activeImageIndex.value--;
+  }
 };
+const selectImage = (index) => {
+  if (activeImageIndex.value === null) {
+    activeImageIndex.value = index;
+  } else {
+    swapImages(activeImageIndex.value, index);
+    activeImageIndex.value = null;
+  }
+};
+
+const swapImages = (index1, index2) => {
+  if(!imagePreviews.value[index1] || !imagePreviews.value[index2]) {
+    return;
+  }
+
+  const tempPreview = imagePreviews.value[index1];
+  
+  imagePreviews.value[index1] = imagePreviews.value[index2];
+  imagePreviews.value[index2] = tempPreview;
+};
+
 const editProduct = async () => {
   try {
     let newImageUrls = [];
 
     if (imageFiles.value.length > 0)  {
       const formData = new FormData();
-      formData.append("image", imageFiles.value);
       imageFiles.value.forEach((file) => {
         formData.append("images[]", file);
       });
@@ -155,12 +207,9 @@ const showError = (message) => {
   });
 };
 
-const isLoading = ref(true);
 onMounted(async () => {
   try {
     await Promise.all([fetchCategories(), fetchProductDetails()]);
-    console.log("Produit final :", product.value);
-    console.log("Catégories finales :", categories.value);
   } catch (error) {
     showError("Erreur lors du chargement des données.");
   } finally {
@@ -201,6 +250,11 @@ label {
   margin-right: 10px;
   margin-bottom: 10px;
   text-align: center;
+  cursor: pointer;
+}
+.image-preview-container.active img{
+  border: 2px solid #007ad9;
+  border-radius: 4px;
 }
 
 .image-preview {

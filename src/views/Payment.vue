@@ -1,5 +1,5 @@
 <template>
-    <div class="cart-container">
+    <main class="cart-container">
       <h1>Mon Panier</h1>
       <div v-if="items && items.length">
         <div v-for="item in items" :key="item.id" class="cart-item">
@@ -18,7 +18,7 @@
       <div v-else>
         <p class="empty-cart-message">Le panier est vide.</p>
       </div>
-    </div>
+    </main>
   </template>
   
   <script>

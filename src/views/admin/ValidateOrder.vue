@@ -1,5 +1,5 @@
 <template>
-  <div class="validate-order">
+  <main class="validate-order">
     <div class="validate-order-header">
       <h1>Valider la commande</h1>
     </div>
@@ -42,7 +42,7 @@
     <div class="validate-order-button">
       <Button icon="pi pi-check" label="Valider la commande" @click="validateOrder" />
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup>

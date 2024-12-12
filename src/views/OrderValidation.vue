@@ -1,5 +1,5 @@
 <template>
-  <div class="order-validation">
+  <main class="order-validation">
     <h1>Validation de la commande</h1>
     <form @submit.prevent="validateOrder" class="p-fluid">
       <div class="p-field">
@@ -40,7 +40,7 @@
     </form>
 
     <Toast />
-  </div>
+  </main>
 </template>
 
 <script setup>

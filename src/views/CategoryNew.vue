@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <main>
       <h1>Ajouter une nouvelle catégorie</h1>
       <form @submit.prevent="addCategory">
         <div>
@@ -8,7 +8,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Ajouter</button>
       </form>
-    </div>
+    </main>
   </template>
   
   <script>

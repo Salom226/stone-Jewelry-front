@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <main>
       <h1>Modifier la catégorie</h1>
       <form @submit.prevent="updateCategory">
         <div>
@@ -8,7 +8,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Modifier</button>
       </form>
-    </div>
+    </main>
   </template>
   
   <script>

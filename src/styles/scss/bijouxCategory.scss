@@ -12,5 +12,24 @@
     text-align: center;
     color: #333;
   }
+  .product-info {
+    font-family: 'ITC';
+    color: #555;
+    text-align: center;
+  
+    .product-name {
+      font-size: 1.13rem;
+      margin: 0;
+      text-transform: uppercase;
+      padding-top: .6rem;
+    }
+  
+    .product-price {
+      font-size: 1.1rem;
+      margin: 0;
+      margin-top: .2rem;
+      font-weight: normal;
+    }
+  }
 }
  

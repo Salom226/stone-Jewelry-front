@@ -1,5 +1,5 @@
 <template>
-  <div class="create-product-admin">
+  <main class="create-product-admin">
     <h1>Nouveau produit</h1>
     <form @submit.prevent="createProduct" class="p-fluid">
       <div class="p-field">
@@ -24,6 +24,23 @@
       <div class="p-field">
         <label for="images">Images</label>
         <input type="file" id="images" multiple @change="onFilesChange" />
+        <div v-if="imagePreviews.length > 0">
+          <p>Aperçu des images :</p>
+          <div
+            class="image-preview-container"
+            v-for="(preview, index) in imagePreviews"
+            :key="index"
+            :class="{ active: activeImageIndex === index }"
+            @click="selectImage(index)"
+          >
+            <img :src="preview" alt="Aperçu" class="image-preview" />
+            <Button
+              icon="pi pi-times"
+              class="p-button-rounded p-button-danger"
+              @click="removeImagePreview(index)"
+            />
+          </div>
+        </div>
       </div>
       <div class="p-field">
         <label for="stock">Stock</label>
@@ -42,7 +59,7 @@
     </form>
 
     <Toast />
-  </div>
+  </main>
 </template>
 
 <script setup>
@@ -68,6 +85,8 @@ const product = ref({
   stock: 0,
 });
 const categories = ref([]);
+const imagePreviews = ref([]);
+const activeImageIndex = ref(null);
 
 const fetchCategories = async () => {
   try {
@@ -78,10 +97,48 @@ const fetchCategories = async () => {
     console.error(error);
   }
 };
+
+const selectImage = (index) => {
+  if (activeImageIndex.value === null) {
+    activeImageIndex.value = index;
+  } else {
+    swapImages(activeImageIndex.value, index);
+    activeImageIndex.value = null;
+  }
+};
+
+const swapImages = (index1, index2) => {
+
+  const tempPreview = imagePreviews.value[index1];
+  imagePreviews.value[index1] = imagePreviews.value[index2];
+  imagePreviews.value[index2] = tempPreview;
+
+  const tempFile = imageFiles.value[index1];
+  imageFiles.value[index1] = imageFiles.value[index2];
+  imageFiles.value[index2] = tempFile;
+};
+
 const imageFiles = ref([]);
 
 const onFilesChange = (event) => {
-  imageFiles.value = Array.from(event.target.files); // Stocker plusieurs fichiers
+  const files = Array.from(event.target.files);
+  imageFiles.value = files;
+
+  imagePreviews.value = files.map((file) => URL.createObjectURL(file));
+};
+
+const removeImagePreview = (index) => {
+
+  URL.revokeObjectURL(imagePreviews.value[index]);
+
+  imageFiles.value.splice(index, 1);
+  imagePreviews.value.splice(index, 1);
+
+  if (activeImageIndex.value === index) {
+    activeImageIndex.value = null;
+  } else if (activeImageIndex.value > index) {
+    activeImageIndex.value--;
+  }
 };
 
 const createProduct = async () => {
@@ -93,7 +150,7 @@ const createProduct = async () => {
 
     const formData = new FormData();
     imageFiles.value.forEach((file) => {
-      formData.append("images[]", file); // Ajouter plusieurs fichiers
+      formData.append("images[]", file); 
     });
 
     const imageResponse = await new Api().post("/admin/products/upload-multiple", formData);
@@ -103,17 +160,15 @@ const createProduct = async () => {
       name: product.value.name,
       description: product.value.description,
       price: product.value.price,
-      images: imageUrls,// URLs des images
+      images: imageUrls,
       stock: product.value.stock,
       categoryId: product.value.categoryId,
     };
 
-    // Log des données préparées
     console.log("Payload envoyé :", payload);
 
-    // Envoi à l'API
     await new Api().post("/admin/products", payload);
-    product.value.images = imageUrls; // Associer les URLs des images au produit
+    product.value.images = imageUrls; 
 
     showSuccess("Produit créé avec succès");
     router.push({ name: "ProductAdmin" });
@@ -173,4 +228,28 @@ label {
   margin-bottom: 0.5rem;
   font-weight: bold;
 }
+.image-preview-container {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.image-preview-container.active img{
+  border: 2px solid #007ad9;
+  border-radius: 4px;
+}
+
+.image-preview {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.p-button-rounded {
+  margin-top: 5px;
+}
+
 </style>

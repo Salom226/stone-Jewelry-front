@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-home">
+  <main class="admin-home">
     <h1>Tableau de bord administrateur</h1>
     <div class="admin-menu">
       <Button
@@ -43,7 +43,7 @@
         </template>
       </Card>
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup>

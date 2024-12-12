@@ -1,5 +1,5 @@
 <template>
-  <div class="orders-admin">
+  <main class="orders-admin">
     <h1>Gestion des commandes</h1>
     <div v-if="loading" class="loading-container">
       <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="4" animationDuration=".5s" />
@@ -45,7 +45,7 @@
 
     <Toast />
     <ConfirmDialog></ConfirmDialog>
-  </div>
+  </main>
 </template>
 
 <script setup>

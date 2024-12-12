@@ -1,5 +1,5 @@
 <template>
-    <div v-if="searchResults.length">
+    <main v-if="searchResults.length">
       <h2>Résultats de la recherche</h2>
       <ul>
         <li v-for="product in searchResults" :key="product.id">
@@ -7,7 +7,7 @@
           <p>{{ product.price }} €</p>
         </li>
       </ul>
-    </div>
+    </main>
   </template>
   
   <script>

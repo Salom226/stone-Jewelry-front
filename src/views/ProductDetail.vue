@@ -34,11 +34,11 @@
               alt="Image du produit" 
               class="suggested-product-image" 
               />
-              <button class="add-to-cart-btn" @click="addToCart(product.id)">Ajouter au panier</button>
+              <button class="add-to-cart" @click.stop="addToCart(product.id)">Ajouter au panier</button>
             </div>
             <div class="suggested-product-info">
-              <h3 class="suggested-product-name">{{ lastProduct.name }}</h3>
-              <h5 class="suggested-product-price">{{ lastProduct.price }}€</h5>
+              <h3 class="suggested-product-name"  @click="goToProductDetail(lastProduct.id)">{{ lastProduct.name }}</h3>
+              <h5 class="suggested-product-price">{{ lastProduct.price.toFixed(2) }}€</h5>
             </div>
           </div>
         </div>

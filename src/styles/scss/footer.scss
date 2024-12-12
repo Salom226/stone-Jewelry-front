@@ -1,0 +1,17 @@
+footer{
+    background-color: rgb(247, 242, 250);
+    padding: 2rem;
+    width: 100%;
+    text-align: center;
+    div p{
+        font-family: 'quicksand';
+    }
+    .logos img{
+        width: 25px;
+        margin: .4rem;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+}

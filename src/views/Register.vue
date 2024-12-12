@@ -1,5 +1,5 @@
 <template>
-  <div class="container security-form">
+  <main class="container security-form">
     <div class="login-form">
       <h1>Inscription</h1>
 
@@ -43,7 +43,7 @@
         </button>
       </form>
     </div>
-  </div>
+  </main>
 </template>
 
 <script>

@@ -1,4 +1,5 @@
 <template>
+  <main>
     <div class="cart-container"> 
         <h1>Mon Panier</h1>
         <div v-if="items && items.length">
@@ -87,6 +88,7 @@
         <button type="submit" class="btn btn-primary">Commander</button>
       </form>
     </div>
+  </main>
   </template>
   
   <script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="products-admin">
+  <main class="products-admin">
     <h1>Gestion des produits</h1>
     <Button label="Ajouter un produit" icon="pi pi-plus" @click="createProductInTable" />
     <div v-if="loading" class="loading-container">
@@ -43,7 +43,7 @@
 
     <Toast />
     <ConfirmDialog></ConfirmDialog>
-  </div>
+  </main>
 </template>
 
 <script setup>

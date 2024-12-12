@@ -1,5 +1,5 @@
 <template>
-  <div class="container security-form">
+  <main class="container security-form">
     <div class="login-form">
       <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
       <form @submit.prevent="handleLogin">
@@ -22,7 +22,7 @@
         </button>
       </form>
     </div>
-  </div>
+  </main>
 </template>
 
 <script>
