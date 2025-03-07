@@ -67,7 +67,7 @@
             @input="handleSearch" 
             type="text" 
             placeholder="Rechercher..." 
-            class="p-inputtext p-component p-inputtext-sm" 
+            class="search-placeholder p-inputtext p-component p-inputtext-sm" 
           />
           <ul
           v-if="searchResults.length > 0"
@@ -94,8 +94,6 @@
             </router-link>
           </li>
         </ul>
-        <a href=""><img src="../public/avatar.png" alt=""></a>
-  
           <router-link v-if="!isLoggedIn" to="/login" class="mr-2">CONNEXION</router-link>
           <router-link v-if="!isLoggedIn" to="/register" class="ml-2">INSCRIPTION</router-link>
           <router-link  v-if="isLoggedIn && isAdmin"  to="/admin" class="ml-2">ADMIN</router-link>

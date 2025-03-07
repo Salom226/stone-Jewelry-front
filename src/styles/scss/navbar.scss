@@ -29,10 +29,7 @@ header {
 
 .navbar-end {
   position: relative;
-}
-
-.navbar-end a {
-  margin-right: 1.6rem;
+  font-size: 12px;
 }
 
 .items-center {
@@ -157,6 +154,10 @@ header {
   color: rgb(116, 123, 255); 
 }
 
+.search-placeholder{
+  margin-right: 1.2rem;
+}
+
 .search-results-container {
   position: absolute;
   top: 100%; 
@@ -200,4 +201,12 @@ header {
   margin: 0;
   font-size: 0.875rem;
   color: #555;
+}
+
+@media screen and (min-width: 600px){
+
+  .navbar-end a {
+    margin-right: 1.6rem;
+    font-size: 16px;
+  }
 }

@@ -78,7 +78,7 @@ export default {
       }
     },
     getProductImageUrl(imageUrl) {
-      return imageUrl || "https://via.placeholder.com/150"; // Image par défaut
+      return imageUrl || "https://via.placeholder.com/150";
     },
   }
 };

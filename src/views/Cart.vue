@@ -1,44 +1,71 @@
 <template>
-  <main class="cart-container">
-    <h1>Mon Panier</h1>
-    <div v-if="items && items.length">
-      <div v-for="item in items" :key="item.id" class="cart-item">
-        <img 
-        :src="getProductImageUrl(item.images?.[0])" 
-        alt="images du produit" 
-        class="product-image"
-        />
-        <h2>{{ item.name }}</h2>
-        <p>Quantité : {{ item.quantity }}</p>
-        <p>Prix unitaire : {{ item.price }} EUR</p>
-        <p>Total pour ce produit : {{ item.price * item.quantity }} EUR</p>
-        <button @click="removeProductFromCart(item.id)" class="remove-btn">
-          Retirer du panier
-        </button>
+  <main>
+    <div class="cart-container">
+      <h1>Panier</h1>
+      <div v-if="items && items.length">
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th>Produit</th>
+              <th>Prix</th>
+              <th>Quantité</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in items" :key="item.id" class="cart-item">
+              <td>
+                <div class="product-details">
+                  <img 
+                    :src="getProductImageUrl(item.images?.[0])" 
+                    alt="images du produit" 
+                    class="product-image"
+                  />
+                  <span class="product-name">{{ item.name }}</span>
+                </div>
+              </td>
+              <td>
+                <span>{{ item.price }}€</span>
+              </td>
+              <td>
+                <div class="quantity-controls">
+                  <button @click="decrementQuantity(item.id)" class="quantity-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+                      <path d="M220-450v-60h520v60H220Z"/>
+                    </svg>
+                  </button>
+                  <span>{{ item.quantity }}</span>
+                  <button @click="incrementQuantity(item.id)" class="quantity-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+                      <path d="M450-450H220v-60h230v-230h60v230h230v60H510v230h-60v-230Z"/>
+                    </svg>
+                  </button>
+                </div>
+                <button class="remove-btn" @click="removeProductFromCart(item.id)">
+                  <span>Retirer</span>
+                </button>
+              </td>
+              <td>
+                <span>{{ item.price * item.quantity }}€</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="cart-total">
+          <h2>Total du panier : {{ totalPrice }} €</h2>
+        </div>
+        <div class="cart-buttons">
+          <Button @click="validateOrder" label="Passer la commande" class="p-button-success order-btn"
+            icon="pi pi-shopping-cart" />
+          <Button @click="clearCart" label="Vider le panier" class="p-button-danger" icon="pi pi-trash" />
+        </div>
       </div>
-      <div class="cart-total">
-        <h3>Total du panier : {{ totalPrice }} EUR</h3>
+      <div v-else>
+        <p class="empty-cart-message">Le panier est vide.</p>
       </div>
-      <div class="cart-buttons">
-        <Button @click="validateOrder" label="Passer la commande" class="p-button-success order-btn"
-          icon="pi pi-shopping-cart" />
-        <Button @click="clearCart" label="Vider le panier" class="p-button-danger" icon="pi pi-trash" />
-      </div>
-    </div>
-    <div v-else>
-      <p class="empty-cart-message">Le panier est vide.</p>
     </div>
   </main>
 </template>
-
-<style scoped>
-.cart-buttons {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  gap: 10px;
-}
-</style>
 
 <script>
 import axios from "axios";
@@ -89,6 +116,22 @@ export default {
         console.error("Erreur lors de la récupération des produits:", error);
       }
     },
+    incrementQuantity(productId) {
+      const item = this.items.find((item) => item.id === productId);
+      if (item) {
+        item.quantity++;
+        updateCart(productId, item.quantity);
+        this.fetchCart();
+      }
+    },
+    decrementQuantity(productId) {
+      const item = this.items.find((item) => item.id === productId);
+      if (item && item.quantity > 1) {
+        item.quantity--;
+        updateCart(productId, item.quantity);
+        this.fetchCart();
+      }
+    },
     removeProductFromCart(productId) {
       removeFromCart(productId);
       this.fetchCart();
@@ -100,17 +143,16 @@ export default {
 
     async validateOrder() {
       console.log("Commande passée");
-
-
       this.$router.push("/orders/validation");
     },
     getProductImageUrl(imageUrl) {
-      return imageUrl || "https://via.placeholder.com/150"; // Image par défaut
+      return imageUrl || "https://via.placeholder.com/150";
     },
   },
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 @import "@/styles/scss/cart.scss";
 </style>
+

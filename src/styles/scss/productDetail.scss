@@ -234,7 +234,7 @@
       flex-direction: row;
     }
   }
-  @media (min-width: 830px) {
+  @media (min-width: 1000px) {
     .suggested-products{ 
       .suggested-products-list {
         grid-template-columns: repeat(4, 1fr); 
