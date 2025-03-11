@@ -68,7 +68,7 @@ export default {
         return;
       }
       axios
-        .post(`${import.meta.env.VITE_API_BASE_URL}`, {
+        .post(`${import.meta.env.VITE_API_URL}/register`, {
           email: this.email,
           firstName: this.firstName,
           lastName: this.lastName,

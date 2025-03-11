@@ -12,13 +12,13 @@
         </div>
 
         <div class="form-group">
-          <label for="inputPassword">Password</label>
+          <label for="inputPassword">Mot de passe</label>
           <input v-model="form.password" type="password" name="_password" id="inputPassword" class="form-control"
             placeholder="Enter your password" required />
         </div>
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">
-          Sign in
+          Connexion
         </button>
       </form>
     </div>
